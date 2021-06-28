@@ -1,0 +1,248 @@
+/* 会员中心
+----------------------------------------------- */
+/* -- startPage -- */
+#user .startPage {
+	background-color: #FFF;
+ border: 1px solid #EEE;
+ padding: 20px 15px;
+}
+#user .startPage .basicInfo .basic {
+ padding: 10px 0 20px 100px;
+ border-bottom: 1px solid #EEE;
+ position: relative;
+ height: 80px;
+ margin-bottom: 20px;
+}
+#user .startPage .basicInfo .basic h2 {
+ font-size: 18px;
+ font-weight: 400;
+}
+#user .startPage .basicInfo .basic p {
+ color: #999;
+ margin-bottom: 10px;
+}
+#user .startPage .basicInfo .basic a {
+ color: #19B4EA;
+}
+#user .startPage .basicInfo .basic .avatar {
+ position: absolute;
+ left: 0;
+ top: 0;
+ padding: 4px;
+ border: 1px solid #e0e0e0;
+ border-radius: 120px;
+}
+#user .startPage .basicInfo .info {
+ font-size: 14px;
+ zoom: 1;
+ overflow: hidden;
+}
+#user .startPage .basicInfo .info dl {
+ padding: 4px 0;
+ width: 50%;
+ float: left;
+}
+#user .startPage .basicInfo .info dl dt {
+ color: #999;
+}
+#user .startPage .basicInfo .info dl dd {
+ color: #555;
+}
+/* -- userTree -- */
+#user .userTree li {
+ margin-bottom:1px;
+}
+#user .userTree li a {
+ display:block;
+ background:#FFFFFF url(images/icon_arrow_right.png) no-repeat right center;
+ padding:10px 10px;
+ font-size:14px;
+}
+/* -- sns -- */
+#user .snsIcon {
+	background-color: #FFF;
+	padding: 0 10px;
+}
+#user .snsIcon a {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+#user .snsLink {
+	padding: 30px 10px;
+	background-color: #FFF;
+	text-align: center;
+}
+#user .snsLink .head {
+ font-size: 22px;
+ font-weight: bold;
+ margin-bottom:40px;
+}
+#user .snsLink .img img {
+	width: 100px;
+	height: 100px;
+	border: 1px solid #e0e0e0;
+ border-radius: 100px;
+}
+#user .snsLink .action {
+	margin-top: 40px;
+}
+#user .snsList {
+	background-color: #FFF;
+	padding: 0 15px;
+}
+#user .snsList dl {
+	zoom:1;
+	overflow: hidden;
+	padding: 15px 0;
+	border-top: 1px dotted #DDD;
+	line-height: 30px;
+}
+#user .snsList dt {
+	float: left;
+}
+#user .snsList dt i {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+#user .snsList dt em {
+	color: #19B4EA;
+}
+#user .snsList dd {
+	float: right;
+}
+#user .snsList dd a {
+	color: #0072C6;
+}
+/* itemList */
+#user .itemList {
+ background-color:#FFF;
+}
+#user .itemList dl {
+ zoom:1;
+ overflow:hidden;
+ background-color:#F8F8F8;
+ padding:10px 10px;
+ margin-bottom:3px;
+}
+#user .itemList dl dt {
+ width:60px;
+ float:left;
+ margin-right:10px;
+ line-height:38px;
+}
+#user .itemList dl dd {
+ margin-left:70px;
+}
+#user .itemList dl dd p {
+ float:left;
+ width:60%;
+ font-weight:bold;
+}
+#user .itemList dl dd span {
+ float:right;
+ text-align:right;
+ color:#888;
+}
+/* item */
+#user .orderList .item {
+ margin-top:5px;
+ background-color:#FFF;
+}
+#user .orderList .item h3 {
+ padding:0 10px;
+ height:38px;
+ line-height:38px;
+}
+#user .orderList .item h3 span {
+ float:right;
+}
+#user .orderList .item ul.amount {
+ padding:0 10px;
+ text-align:right;
+ height:38px;
+ line-height:38px;
+}
+#user .orderList .item ul.amount em {
+ color:#999;
+}
+#user .orderList .item ul.btnList {
+ padding:10px;
+ height:28px;
+ border-top: solid #EEE 1px;
+ text-align:right;
+}
+/* order */
+#user .order .tableBasic {
+ margin-bottom:8px;
+}
+#user .order .totalAmount {
+ font-size: 13px;
+ padding: 5px 10px;
+ background-color: #FFF;
+ margin-bottom:10px;
+}
+#user .order .totalAmount dl {
+ zoom:1;
+ overflow:hidden;
+ padding:3px 0;
+}
+#user .order .totalAmount dt {
+ float:left;
+ color:#999;
+}
+#user .order .totalAmount dd {
+ float:right;
+}
+#user .order .totalAmount .payment {
+ border-top: solid #EEE 1px;
+ margin-top:10px;
+ padding:10px 0;
+ text-align:right;
+}
+#user .order .itemList h3 {
+ padding: 8px 10px;
+ background-color: #FFF;
+}
+#user .order .info {
+ color:#999;
+}
+#user .order .btnBox {
+	float: right;
+}
+/*- inputFile -*/
+#user .inputFile {
+ width: 80px;
+}
+#user .inputFile .imgShow {
+ height: 80px;
+ line-height: 80px;
+ text-align: center;
+ color: #555;
+ background-color: #F5F5F5;
+}
+#user .inputFile .imgShow img {
+ width: 100%;
+ height: 80px;
+}
+#user .inputFile .imgBtn {
+ width: 100%;
+ background-color: #EEE;
+ color: #999;
+ line-height: 25px;
+ cursor: pointer;
+ text-align: center;
+ -webkit-appearance: none;
+}

@@ -1,0 +1,378 @@
+/* 会员中心
+----------------------------------------------- */
+#user {
+ zoom:1;
+ overflow:hidden;
+	min-height: 400px;
+}
+#user .userLeft {
+ float: left;
+ width: 160px;
+ margin-right: 30px;
+}
+#user .userIn {
+ float: left;
+ width: 810px;
+ overflow: hidden;
+}
+#user .userIn .main {
+	margin-top: 25px;
+ padding:20px 30px;
+	border: 1px solid #EEE;
+}
+#user .userIn .main h3 {
+ color: #555;
+ font-size: 26px;
+ padding-bottom: 20px;
+ font-weight:normal;
+}
+#user .userIn .main h3 .more {
+ float:right;
+ color:#888;
+ font-size:12px;
+ margin-top:9px;
+ font-weight:normal;
+}
+/* -- passport -- */
+#user .passport {
+ padding:50px 0 80px 0;
+}
+#user .passport .register h3 {
+ font-size: 22px;
+ font-weight: bold;
+ color: #19B4EA;
+ border-bottom: 1px dashed #CCCCCC;
+ padding-bottom: 20px;
+ margin-bottom:40px;
+}
+#user .passport .register h3 em {
+ display:block;
+ color: #999;
+ font-size:12px;
+ font-weight:normal;
+}
+#user .passport .register h3 a {
+ color: #19B4EA;
+}
+#user .passport .register .btn {
+ width:200px;
+}
+#user .passport .login {
+ margin:0 auto;
+ width:320px;
+}
+#user .passport .login h3 {
+ font-size: 22px;
+ font-weight: bold;
+ margin-bottom:40px;
+}
+#user .passport .login h3 em {
+ display:block;
+ color: #999;
+ font-size:12px;
+ font-weight:normal;
+}
+#user .passport .login .textInput {
+ width:306px;
+}
+#user .passport .login .btn {
+ width:100%;
+}
+#user .passport .login .btnRegister {
+ display: block;
+ width:318px;
+ border: 1px solid #CCCCCC;
+ color: #555555;
+ padding: 6px 0;
+ cursor: pointer;
+ font-weight: bold;
+ text-align:center;
+}
+/* -- userTree -- */
+#user .userTree {
+ margin-top: 25px;
+}
+#user .userTree h3 {
+ background-color: #DDD;
+ line-height: 100px;
+ color: #555;
+ font-weight: normal;
+ font-size: 18px;
+ text-align: center;
+}
+#user .userTree ul {
+	padding-top: 5px;
+}
+#user .userTree li a {
+ display:block;
+ padding:8px 10px;
+ color: #555;
+ font-size: 14px;
+}
+#user .userTree li.cur {
+ background-color:#19B4EA;
+}
+#user .userTree li.cur a {
+ color:#FFF;
+}
+#user .userTree .searchBox {
+ margin:20px 0;
+}
+#user .userTree .searchBox .keyword {
+ width: 136px;
+}
+/* -- btnAction -- */
+#user .btnAction a {
+ display: block;
+ margin: 0 0 10px auto;
+ width: 120px;
+ line-height: 30px;
+ border: 1px solid #DDD;
+ text-align: center;
+ color: #777;
+}
+#user .btnAction a:hover {
+ border: 1px solid #999;
+ background-color: #999;
+ color: #FFF;
+}
+#user .btnAction a.pay {
+ border: 1px solid #e4393c;
+ color: #e4393c;
+}
+#user .btnAction a.pay:hover {
+ background-color: #e4393c;
+ color: #FFF;
+}
+/* -- startPage -- */
+#user .startPage {
+ padding: 10px;
+}
+#user .startPage .basicInfo .basic {
+ padding: 30px 0 20px 150px;
+ border-bottom: 1px solid #DDD;
+ position: relative;
+ height: 100px;
+ margin-bottom: 20px;
+}
+#user .startPage .basicInfo .basic h2 {
+ font-size: 18px;
+ font-weight: 400;
+}
+#user .startPage .basicInfo .basic p {
+ color: #999;
+ margin-bottom: 10px;
+}
+#user .startPage .basicInfo .basic a {
+ color: #19B4EA;
+}
+#user .startPage .basicInfo .basic .avatar {
+ position: absolute;
+ left: 0;
+ top: 0;
+ padding: 4px;
+ border: 1px solid #e0e0e0;
+ border-radius: 120px;
+}
+#user .startPage .basicInfo .info {
+ font-size: 14px;
+ zoom: 1;
+ overflow: hidden;
+ margin-bottom: 30px;
+}
+#user .startPage .basicInfo .info li {
+ padding: 8px 0;
+ color: #999;
+ width: 33%;
+ float: left;
+}
+/* -- sns -- */
+#user .snsIcon a {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+#user .snsLink {
+ font-weight: bold;
+ margin-bottom:40px;
+	text-align: center;
+}
+#user .snsLink .head {
+ font-size: 22px;
+ font-weight: bold;
+ margin-bottom:40px;
+}
+#user .snsLink .img img {
+	width: 100px;
+	height: 100px;
+	border: 1px solid #e0e0e0;
+ border-radius: 100px;
+}
+#user .snsLink .action {
+	margin-top: 40px;
+}
+#user .snsList dl {
+	zoom:1;
+	overflow: hidden;
+	padding: 15px 0;
+	border-top: 1px dotted #DDD;
+	line-height: 30px;
+}
+#user .snsList dt {
+	float: left;
+}
+#user .snsList dt i {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	border-radius: 50%;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+#user .snsList dt em {
+	color: #19B4EA;
+}
+#user .snsList dd {
+	float: right;
+}
+#user .snsList dd a {
+	color: #0072C6;
+}
+/* -- orderList -- */
+#user .orderList {
+ border-top: 1px solid #DDD;
+}
+#user .orderList .item {
+ border-bottom: 1px solid #DDD;
+ margin-bottom: 20px;
+}
+#user .orderList .item .status {
+ padding: 15px 0 1px 0;
+ color: #b0b0b0;
+ font-size: 18px;
+}
+#user .orderList .item .detail .info {
+ border-bottom: 1px solid #EEE;
+ padding: 1px 20px 15px 0;
+}
+#user .orderList .item .detail .info em {
+ margin-right: 10px;
+}
+#user .orderList .item .detail .amount {
+ width: 180px;
+ border-bottom: 1px solid #EEE;
+ padding: 1px 0 15px 20px;
+ text-align: right;
+}
+#user .orderList .item .detail .amount b {
+ font-size: 16px;
+}
+#user .orderList .item .detail .list .listBox dl {
+ position: relative;
+ height: 44px;
+ margin: 15px 0;
+ padding: 10px 10px 10px 80px;
+ line-height: 22px;
+ color: #333;
+}
+#user .orderList .item .detail .list .listBox dl .img {
+ position: absolute;
+ left: 0;
+ top: 0;
+}
+#user .orderList .item .detail .action {
+ padding: 15px 0;
+ text-align: right;
+ vertical-align: top;
+}
+/* -- order -- */
+#user .order .head {
+	margin-bottom: 30px;
+}
+#user .order .head .title {
+ border-bottom: 1px solid #DDD;
+	zoom:1;
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+#user .order .head .title h2 {
+	float: left;
+	font-size: 18px;
+	font-weight: 400;
+	color: #333;
+}
+#user .order .head .title .action {
+	float: right;
+}
+#user .order .head .subTitle {
+	padding: 5px 0;
+	color: #999;
+	font-size: 14px;
+}
+#user .order .head .subTitle span {
+	margin-right: 15px;
+}
+#user .order .itemList {
+	width: 100%;
+ border-top: 1px solid #EEE;
+}
+#user .order .itemList td {
+ border-bottom: 1px solid #EEE;
+	padding: 10px;
+	text-align: left;
+}
+#user .order .info {
+	margin-top: 30px;
+ border-bottom: 1px solid #DDD;
+	padding-bottom: 20px;
+}
+#user .order .info h2 {
+	font-size: 18px;
+	font-weight: 400;
+	color: #333;
+	margin-bottom: 10px;
+}
+#user .order .info ul {
+	line-height: 200%;
+	color: #999;
+	font-size: 14px;
+}
+#user .order .totalAmount {
+	text-align: right;
+	padding-top: 20px;
+	line-height: 200%;
+	font-size: 16px;
+	color: #999;
+}
+/*- inputFile -*/
+#user .inputFile {
+ width: 80px;
+}
+#user .inputFile .imgShow {
+ height: 80px;
+ line-height: 80px;
+ text-align: center;
+ color: #555;
+ background-color: #F5F5F5;
+}
+#user .inputFile .imgShow img {
+ width: 100%;
+ height: 80px;
+}
+#user .inputFile .imgBtn {
+ width: 100%;
+ background-color: #EEE;
+ color: #999;
+ line-height: 25px;
+ cursor: pointer;
+ text-align: center;
+ -webkit-appearance: none;
+}

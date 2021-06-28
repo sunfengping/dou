@@ -1,0 +1,11 @@
+500027
+20200115130738
+2.0
+NjA2NjE5MkZEREQ2OURGRTFFRjAxMjY2MDRCMEVERTU3NjdBRDVBRQ==
+合同
+bgjdv4
+v2.3
+12
+4
+{"truename":"","cardno":"","bankno":"","phoneno":"","bankname":"","riqi":"2020年01月15日","jiaaddr":"山东省日照山海天旅游度假区太公一路北董家滩社区沿街3号楼608室","jiausername":"华煌信息科技（山东）有限公司","jianame":"缪锋","jiaphone":"13761095691"}
+

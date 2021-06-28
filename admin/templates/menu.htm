@@ -1,0 +1,40 @@
+{if $user.type eq 3}
+<style>
+ {literal}
+     .slidemenu{display: none}
+     .product1{display: block}
+ {/literal}
+</style>
+{/if}
+<div id="menu">
+ <ul class="top">
+  <!--<li>{$lang.menu_home}</li>-->
+ </ul>
+ <!--
+ <ul>
+  <li{if $cur eq 'system'} class="cur"{/if}><a href="system.php"><i class="system"></i><em>{$lang.system}</em></a></li>
+  <li{if $cur eq 'nav'} class="cur"{/if}><a href="nav.php"><i class="nav"></i><em>{$lang.nav}</em></a></li>
+  <li{if $cur eq 'show'} class="cur"{/if}><a href="show.php"><i class="show"></i><em>{$lang.show}</em></a></li>
+  <li{if $cur eq 'page'} class="cur"{/if}><a href="page.php"><i class="page"></i><em>{$lang.menu_page}</em></a></li>
+ </ul>
+ -->
+
+ <ul>
+  <li class="{if $cur eq 'product_category'}cur{/if} slidemenu"><a href="product_category.php"><i class="productCat"></i><em>任务分类</em></a></li>
+  <li class=" {if $cur eq 'product1'}cur product1 {/if} slidemenu" ><a href="product.php?type=1"><i class="product"></i><em>商户端任务</em></a></li>
+  <li style="display: none"  class=" {if $cur eq 'product0'}cur{/if} slidemenu"><a href="product.php?type=0" ><i class="product"></i><em>分包任务</em></a></li>
+  <li class=" {if $cur eq 'list'}cur{/if} slidemenu" ><a href="list.php"><i class="list"></i><em>工人领工明细</em></a></li>
+ </ul>
+ <ul style="display: block">
+  <li class="{if $cur eq 'article_category'}cur{/if} slidemenu"><a href="article_category.php"><i class="articleCat"></i><em>文章分类</em></a></li>
+  <li class="{if $cur eq 'article'}cur{/if} slidemenu"><a href="article.php"><i class="article"></i><em>文章列表</em></a></li>
+
+ </ul>
+
+ <ul class="bot">
+  <li class="{if $cur eq 'backup'}cur{/if} slidemenu"><a href="backup.php"><i class="backup"></i><em>{$lang.backup}</em></a></li>
+
+  <li class="{if $cur eq 'manager'}cur{/if} slidemenu"><a href="manager.php"><i class="manager"></i><em>{$lang.manager}</em></a></li>
+  <li class="{if $cur eq 'manager_log'}cur{/if} slidemenu"><a href="manager.php?rec=manager_log"><i class="managerLog"></i><em>{$lang.manager_log}</em></a></li>
+ </ul>
+</div>

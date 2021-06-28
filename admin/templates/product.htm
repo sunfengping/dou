@@ -1,0 +1,821 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>{$lang.home}{if $ur_here} - {$ur_here} {/if}</title>
+<meta name="Copyright" content="Douco Design." />
+<link href="templates/public.css" rel="stylesheet" type="text/css">
+{include file="javascript.htm"}
+<script type="text/javascript" src="images/jquery.form.min.js"></script>
+<script type="text/javascript" src="images/jquery.autotextarea.js"></script>
+    <script src="images/laydate/laydate.js"></script>
+ <script type="text/javascript" src="images/user.js"></script>
+   
+
+</head>
+<body>
+<div id="dcWrap">
+ {include file="header.htm"}
+ <div id="dcLeft">{include file="menu.htm"}</div>
+ <div id="dcMain">
+   {include file="handle.htm"}
+   <div class="mainBox" style="{$workspace.height}">
+    <!-- {if $rec eq 'showdicform'}  -->
+    <h3><a href="/admin/product.php?rec=createpro&id={$id}" class="actionBtn add">确定生成分任务</a>查看总包模板分析结果</h3>
+    <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+     <tr>
+      <!--<th width="22" align="center"><input name='chkall' type='checkbox' id='chkall' onclick='selectcheckbox(this.form)' value='check'></th>-->
+      <th width="40" align="center">分类名称</th>
+      <th width="80" align="center">任务价格</th>
+      <th width="80" align="center">任务人数</th>
+      <th width="80" align="center">绑定手机号</th>
+     </tr>
+     <!-- {foreach from=$product_list item=product} -->
+     <tr>
+      <!--<td align="center"><input type="checkbox" name="checkbox[]" value="" /></td>-->
+      <td align="center">{$product.cat_name}</td>
+      <td align="center">{$product.price}</td>
+      <td align="center">{$product.count}</td>
+      <td align="center">{$product.mobile}</td>
+
+     </tr>
+     <!-- {/foreach} -->
+    </table>
+    <!-- {/if}-->
+    <!-- {if $rec eq 'default'} 商品列表 -->
+    <h3>
+        <!-- {if $user.type neq 3} -->
+        <a href="{$action_link.href}" class="actionBtn add">{$action_link.text}</a>
+        <!-- {/if}-->
+        {$ur_here}</h3>
+    <div class="filter">
+    <form action="product.php" method="post">
+     <select name="cat_id">
+      <option value="0">{$lang.uncategorized}</option>
+      <!-- {foreach from=$product_category item=cate} -->
+      <!-- {if $cate.cat_id eq $cat_id} -->
+      <option value="{$cate.cat_id}" selected="selected">{$cate.mark} {$cate.cat_name}</option>
+      <!-- {else} -->
+      <option value="{$cate.cat_id}">{$cate.mark} {$cate.cat_name}</option>
+      <!-- {/if} -->
+      <!-- {/foreach} -->
+     </select>
+
+
+     <select name="type">
+      <option value="">任务类型</option>
+      <!-- {if $type eq 0} -->
+      <option value="0" selected="selected">工人任务</option>
+      <!-- {else} -->
+      <option value="0" >工人任务</option>
+      <!-- {/if} -->
+      <!-- {if $type eq 1} -->
+      <option value="1" selected="selected">商户端任务</option>
+      <!-- {else} -->
+      <option value="1" >商户端任务</option>
+      <!-- {/if} -->
+     </select>
+
+
+
+
+        <select name="upload_status">
+            <option value="">任务状态</option>
+            <!-- {if $upload_status eq 0} -->
+            <option value="0" selected="selected">未上传明细</option>
+            <!-- {else} -->
+            <option value="0" >未上传明细</option>
+            <!-- {/if} -->
+
+            <!-- {if $upload_status eq 1} -->
+            <option value="1" selected="selected">待审核</option>
+            <!-- {else} -->
+            <option value="1" >待审核</option>
+            <!-- {/if} -->
+
+            <!-- {if $upload_status eq 2} -->
+            <option value="2" selected="selected">审核通过，待打款</option>
+            <!-- {else} -->
+            <option value="2" >审核通过，待打款</option>
+            <!-- {/if} -->
+
+            <!-- {if $upload_status eq 3} -->
+            <option value="3" selected="selected">已确认打款</option>
+            <!-- {else} -->
+            <option value="3" >已确认打款</option>
+            <!-- {/if} -->
+
+            <!-- {if $upload_status eq -1} -->
+            <option value="-1" selected="selected">审核失败</option>
+            <!-- {else} -->
+            <option value="-1" >审核失败</option>
+            <!-- {/if} -->
+
+        </select>
+
+        <input name="user_id" type="text" placeholder="商户id" class="inpMain" value="{$user_id}" size="20" />
+        <input name="enterprise_name" type="text" placeholder="企业名称" class="inpMain" value="{$enterprise_name}" size="20" />
+     <!-- {if $type eq 0} -->
+     <input name="pid" type="text" placeholder="商户总包任务id" class="inpMain" value="{$pid}" size="20" />
+     <!-- {/if} -->
+
+     <input name="keyword" type="text" class="inpMain" value="{$keyword}" size="20" />
+     <input name="submit" class="btnGray" type="submit" value="{$lang.btn_filter}" />
+    </form>
+    <span>
+    <!--<a class="btnGray" href="product.php?rec=thumb">更新任务缩略图</a>-->
+    <!--&lt;!&ndash; {if $sort.handle} &ndash;&gt;-->
+    <!--<a class="btnGray" href="product.php?rec=sort&act=handle">{$lang.sort_close}</a>-->
+    <!--&lt;!&ndash; {else} &ndash;&gt;-->
+    <!--<a class="btnGray" href="product.php?rec=sort&act=handle">开始筛选首页商品</a>-->
+    <!--&lt;!&ndash; {/if} &ndash;&gt;-->
+    </span>
+    </div>
+    <!-- {if $sort.handle} -->
+    <div class="homeSortRight">
+     <ul class="homeSortBg">
+      {$sort.bg}
+     </ul>
+     <ul class="homeSortList">
+      <!-- {foreach from=$sort.list item=product} -->
+      <li>
+       <img src="{$product.image}" width="60" height="60">
+       <a href="product.php?rec=sort&act=cancel&id={$product.id}" title="{$lang.sort_cancel}">X</a>
+      </li>
+      <!-- {/foreach} -->
+     </ul>
+    </div>
+    <!-- {/if} -->
+    <div id="list"{if $sort.handle} class="homeSortLeft"{/if}>
+    <form name="action" method="post" action="product.php?rec=action">
+    <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+      <tr>
+        <th width="22" align="center"><input name='chkall' type='checkbox' id='chkall' onclick='selectcheckbox(this.form)' value='check'></th>
+        <th width="30" align="center">{$lang.record_id}</th>
+        <th width="30" align="center">商户信息</th>
+        <th width="90" align="left">任务名称</th>
+        <th width="70" align="center">{$lang.product_category}</th>
+       <th width="70" align="center">任务价格</th>
+       <th width="70" align="center">任务人数</th>
+       <th width="70" align="center">支付状态</th>
+       <th width="70" align="center">状态</th>
+       <th width="70" align="center">{$lang.add_time}</th>
+
+          <!-- {if $user.type neq 3} -->
+        <th width="80" align="center">{$lang.handler}</th>
+        <th width="80" align="center">管理员自主操作</th>
+         <!-- {/if} -->
+        <th width="90" align="center">附件</th>
+      </tr>
+      <!-- {foreach from=$product_list item=product} -->
+      <tr>
+        <td align="center"><input type="checkbox" name="checkbox[]" value="{$product.id}" /></td>
+        <td align="center">
+            <!-- {if $product.is_read eq 1} -->
+            <div class="circle" style="float: left"></div>
+            <!-- {/if} -->
+            {$product.id}</td>
+           <td> id:{$product.user_id}<br/>企业名称：{$product.enterprise_name}</td>
+        <td>{$product.name}</td>
+        <td align="center"><!-- {if $product.cat_name} -->{$product.cat_name}<!-- {else} -->{$lang.uncategorized}<!-- {/if} --></td>
+       <td align="center">{$product.price}</td>
+       <td align="center">{$product.max}</td>
+       <td align="center"><!-- {if $product.pay_status eq 0} --> 未支付<!-- {/if} --><!-- {if $product.pay_status eq 1} --> 已支付<!-- {/if} --></td>
+       <td align="center"><!-- {if $product.status eq 0} --> 进行中<!-- {/if} --><!-- {if $product.status eq 1} --> 已完成<!-- {/if} --></td>
+       <td align="center">{$product.add_time}</td>
+      <!-- {if $user.type neq 3} -->
+      <td align="center">
+           <!-- {if $product.upload_status eq 1} -->
+           <a href="product.php?rec=showxlsdetails&id={$product.id}" id="showListDetails" data-value="{$product.file_path}">查看分发明细</a> |
+           <!-- {if $product.status eq 0} -->
+                  <a href="product.php?rec=xlsreplace&id={$product.id}">上传最新版本</a> |
+                  <a href="product.php?rec=xlspass&id={$product.id}">通过审核</a> |
+                   <span id="xlsfail"><a>审核失败</a> |
+                    <span style="display: none;">
+                        <textarea name="upload_fail_reason" id="upload_fail_reason" cols="30" class="textAreaAuto" style="height:50px"></textarea>
+                        <input type="hidden" name="id" id="id" value="{$product.id}" />
+                        <input  class="btn"  id="savexlsfail" value="提交" style="width:80px; text-align: center" />
+                    </span>
+                   </span>
+          <!-- {/if} -->
+
+          <!-- {/if} -->
+          <!-- {if $product.upload_status eq 2} -->
+           <a href="product.php?rec=showxlsdetails&id={$product.id}" id="showListDetails" data-value="{$product.file_path}">查看分发明细</a> |
+          <!-- {if $product.status eq 0} -->
+          <a href="product.php?rec=showxlsdetails&id={$product.id}" id="showListDetails" data-value="{$product.file_path}">查看分发明细</a> |
+          <a>审核通过，待确认</a> |
+          <a href="http://58.banyar.cn/admin/list.php?ppid={$product.id}">去打款</a>
+          <!-- {/if} -->
+          <!-- {/if} -->
+
+          <!-- {if $product.upload_status eq 3} -->
+           <a href="product.php?rec=showxlsdetails&id={$product.id}" id="showListDetails" data-value="{$product.file_path}">查看分发明细</a> |
+          <!-- {if $product.status eq 0} -->
+          <a>已确认</a> |
+
+          <a href="http://58.banyar.cn/admin/list.php?ppid={$product.id}">去打款</a>
+          <!-- {/if} -->
+          <!-- {/if} -->
+
+          <!-- {if $product.upload_status eq -1} -->
+           <a href="product.php?rec=showxlsdetails&id={$product.id}" id="showListDetails" data-value="{$product.file_path}">查看分发明细</a> |
+          <!-- {if $product.status eq 0} -->
+          <a>审核失败</a>|
+          <br/>原因：<font style="color:#f00">{$product.upload_fail_reason}</font>
+
+          <!-- {/if} -->
+          <!-- {/if} -->
+          <a   href="http://58.banyar.cn/admin/product.php?rec=uploadfile&type=5&id={$product.id}">上传验收扫描件 </a> |
+            |<a href="http://58.banyar.cn/admin/product.php?rec=uploadfile&type=4&id={$product.id}">上传电子回单</a> |
+          <!-- {if $product.file4 neq ''} -->
+           <a  href="../../{$product.file4}" download="../../{$product.file4}">下载电子回单 </a> |
+          <!-- {/if} -->
+          <!-- {if $product.file5 neq ''} -->
+          <a  href="../../{$product.file5}" download="../../{$product.file5}">下载验收扫描件 </a> |
+          <!-- {/if} -->
+      </td>
+      <td align="center">
+         <!-- {if $type eq 1} -->
+         <a href="product.php?rec=upload&id={$product.id}" style="display: none">上传商户总包任务发放模板_旧生成分包任务</a> |
+         <a href="product.php?rec=uploadnew&id={$product.id}">上传商户总包任务发放模板_新</a> |
+            <!-- {if $product.count eq 0} -->
+                <a href="product.php?rec=addamount&id={$product.id}">添加打款信息</a> |
+            <!-- {else} -->
+                <a href="product.php?rec=addamount&id={$product.id}">查看打款信息</a> |
+            <!-- {/if} -->
+         <a href="product.php?rec=showdicform&id={$product.id}" style="display: none">查看已上传未添加的数据</a> |
+         <!-- {/if} -->
+         <!-- {if $sort.handle} -->
+         <a href="product.php?rec=sort&act=set&id={$product.id}">{$lang.sort_btn}</a>
+         <!-- {else} -->
+         <a href="product.php?rec=edit&id={$product.id}">{$lang.edit}</a> | <a href="product.php?rec=del&id={$product.id}">{$lang.del}</a>
+         <!-- {/if} -->
+        </td>
+      <!-- {/if} -->
+      <td align="center">
+
+            <a   href="http://58.banyar.cn/admin/product.php?rec=uploadfile&type=1&id={$product.id}">上传增值税专用发票 </a> |
+           <a   href="http://58.banyar.cn/admin/product.php?rec=uploadfile&type=2&id={$product.id}">上传完税</a> |
+           <a   href="http://58.banyar.cn/admin/product.php?rec=uploadfile&type=3&id={$product.id}">上传个人增值发票</a> |
+
+               <!-- {if $product.file1 neq ''} -->
+           <a   href="../../{$product.file1}" download="../../{$product.file1}">下载增值税专用发票 </a> |
+               <!-- {/if} -->
+               <!-- {if $product.file2 neq ''} -->
+           <a   href="../../{$product.file2}" download="../../{$product.file2}">下载完税 </a> |
+               <!-- {/if} -->
+               <!-- {if $product.file3 neq ''} -->
+           <a  href="../../{$product.file3}" download="../../{$product.file3}">下载个人增值发票 </a> |
+               <!-- {/if} -->
+
+
+      </td>
+      </tr>
+      <!-- {/foreach} -->
+    </table>
+    <div class="action">
+     <select name="action" onchange="douAction()">
+      <option value="0">{$lang.select}</option>
+      <option value="del_all">{$lang.del}</option>
+      <option value="category_move">{$lang.category_move}</option>
+     </select>
+     <select name="new_cat_id" style="display:none">
+      <option value="0">{$lang.uncategorized}</option>
+      <!-- {foreach from=$product_category item=cate} -->
+      <!-- {if $cate.cat_id eq $cat_id} -->
+      <option value="{$cate.cat_id}" selected="selected">{$cate.mark} {$cate.cat_name}</option>
+      <!-- {else} -->
+      <option value="{$cate.cat_id}">{$cate.mark} {$cate.cat_name}</option>
+      <!-- {/if} -->
+      <!-- {/foreach} -->
+     </select>
+     <input name="submit" class="btn" type="submit" value="{$lang.btn_execute}" />
+    </div>
+    </form>
+    </div>
+    <div class="clear"></div>
+     <script type="text/javascript">
+         {literal}
+         $("#xlsfail").on('click',function(){
+                $(this).children('span').css('display','block');
+         });
+         $("#savexlsfail").on('click',function(){
+             var upload_fail_reason = $(this).parent().children('textarea').val();
+             var id = $(this).parent().children('input[name=id]').val();
+             if(upload_fail_reason=="")
+             {
+                 alert('请输入失败原因');
+                 return;
+             }
+              $.ajax({
+                 type: 'post',
+                 url:'product.php?rec=xlsfail',
+                 data: {upload_fail_reason:upload_fail_reason,id:id},
+                 dateType: 'json',
+                 success: function(response){
+                     alert('操作成功');
+                     document.location.reload();
+                 },
+                 error:function(){
+                     alert('请稍后再试');
+                 }
+             });
+         });
+         {/literal}
+     </script>
+
+
+    {include file="pager.htm"}
+
+    <!-- {/if} -->
+  <!-- {if $rec eq 'upload'} 上传商户总包任务发放模板 -->
+  <h3>上传商户总包任务发放模板</h3>
+  <form action="product.php?rec=upload_post"method="post" enctype="multipart/form-data">
+   <div class="formBasic">
+    <dl>
+     <dt>上传文件</dt>
+     <dd>
+      <input type="file" name="image" size="38" class="inpFlie" />
+      {if $article.image}<a href="{$article.image}" target="_blank"><img src="images/icon_yes.png"></a>{else}<img src="images/icon_no.png">{/if}
+     </dd>
+    </dl>
+    <input type="hidden" name="id" value="{$id}">
+    <input name="submit" class="btn" type="submit" value="{$lang.btn_submit}" />
+   </div>
+   </form>
+  <!-- {/if} -->
+  <!-- {if $rec eq 'uploadnew'} 上传商户总包任务发放模板新版 -->
+  <h3>上传商户总包任务发放模板</h3>
+  <form action="product.php?rec=uploadnew_post"method="post" enctype="multipart/form-data">
+   <div class="formBasic">
+    <dl>
+     <dt>上传文件</dt>
+     <dd>
+      <input type="file" name="image" size="38" class="inpFlie" />
+      {if $article.image}<a href="{$article.image}" target="_blank"><img src="images/icon_yes.png"></a>{else}<img src="images/icon_no.png">{/if}
+     </dd>
+    </dl>
+    <input type="hidden" name="id" value="{$id}">
+    <input name="submit" class="btn" type="submit" value="{$lang.btn_submit}" />
+   </div>
+  </form>
+  <!-- {/if} -->
+
+
+     <!-- {if $rec eq 'uploadfile'} 上传各文件 票、税 -->
+     <h3>上传</h3>
+     <form action="product.php?rec=uploadfile_post"method="post" enctype="multipart/form-data">
+         <div class="formBasic">
+             <dl>
+                 <dt>上传文件</dt>
+                 <dd>
+                     <input type="file" name="image" size="38" class="inpFlie" />
+                     {if $article.image}<a href="{$article.image}" target="_blank"><img src="images/icon_yes.png"></a>{else}<img src="images/icon_no.png">{/if}
+                 </dd>
+             </dl>
+             <input type="hidden" name="id" value="{$id}">
+             <input type="hidden" name="type" value="{$type}">
+             <input name="submit" class="btn" type="submit" value="{$lang.btn_submit}" />
+         </div>
+     </form>
+     <!-- {/if} -->
+
+
+
+     <!-- {if $rec eq 'addamount'} 添加商户端打款记录 -->
+     <h3>添加商户端线下打款记录</h3>
+     <form action="product.php?rec=addamount_post" method="post" enctype="multipart/form-data">
+         <div class="formBasic">
+             <dl>
+                 <dt>打款金额</dt>
+                 <dd>
+                     <!-- {if $count eq 0} -->
+                     <input type="text" name="amount" value="" size="80" class="inpMain"  />
+                     <!-- {else} -->
+                     <input type="text" name="amount" value="{$rc_info.amount}" size="80" class="inpMain"  />
+                     <!-- {/if} -->
+                 </dd>
+             </dl>
+
+             <dl>
+             <dt>描述</dt>
+             <dd>
+                 <!-- {if $count eq 0} -->
+                 <textarea name="des" cols="115" rows="3" class="textArea" /></textarea>
+                 <!-- {else} -->
+                 <textarea name="des" cols="115" rows="3" class="textArea" />{$rc_info.des}</textarea>
+                 <!-- {/if} -->
+
+             </dd>
+             </dl>
+             <dl>
+                 <input type="hidden" name="token" value="{$token}" />
+                 <input type="hidden" name="pid" value="{$id}">
+                 <input name="submit" class="btn" type="submit" value="{$lang.btn_submit}" />
+             </dl>
+         </div>
+     </form>
+     <!-- {/if} -->
+
+     <!-- {if $rec eq 'xlsreplace'} 上传商户总包任务发放模板 -->
+     <h3>上传商户总包任务发放模板</h3>
+     <form action="product.php?rec=xlsreplace_post"method="post" enctype="multipart/form-data">
+         <div class="formBasic">
+             <dl>
+                 <dt>上传文件</dt>
+                 <dd>
+                     <input type="file" name="image" size="38" class="inpFlie" />
+                     {if $article.image}<a href="{$article.image}" target="_blank"><img src="images/icon_yes.png"></a>{else}<img src="images/icon_no.png">{/if}
+                 </dd>
+             </dl>
+             <input type="hidden" name="id" value="{$id}">
+             <input name="submit" class="btn" type="submit" value="{$lang.btn_submit}" />
+         </div>
+     </form>
+     <!-- {/if} -->
+     <!-- {if $rec eq 'showxlsdetails'} 查看上传的xls文件 -->
+     <h3>查看xls文件</h3>
+     <iframe src='https://view.officeapps.live.com/op/view.aspx?src=http://58.banyar.cn/{$file}' width='1500px' height='800px' frameborder='1'>
+     </iframe>
+
+     <!-- {/if} -->
+    <!-- {if $rec eq 'add' || $rec eq 'edit'} 商品添加或编辑 -->
+    <h3><a href="{$action_link.href}" class="actionBtn">{$action_link.text}</a>{$ur_here}</h3>
+    <form action="product.php?rec={$form_action}" method="post" enctype="multipart/form-data">
+     <div class="formBasic">
+      <dl>
+       <dt>{$lang.product_name}</dt>
+       <dd>
+        <input type="text" name="name" value="{$product.name}" size="80" class="inpMain" />
+       </dd>
+      </dl>
+      <dl >
+       <dt>{$lang.product_category}</dt>
+          <dd>
+              <select id="category1"    style="width:40%; float:left">
+                  <!-- {foreach from=$category_list item=cate key=key} -->
+                  {$cate.cat_id}
+                  <!-- {if $parent_cat_info.parent_id eq $cate.cat_id } -->
+                  <option value="{$cate.cat_id}" selected="selected">{$cate.cat_name}</option>
+                  <!-- {else} -->
+                  <option value="{$cate.cat_id}">{$cate.cat_name}</option>
+                  <!-- {/if} -->
+                  <!-- {/foreach} -->
+              </select>
+              <!-- {if $rec eq 'add'} 商品添加 -->
+              <select name="cat_id"    id="category2" style="display:none;width:40%; float:left">
+              </select>
+              <!-- {/if} -->
+
+              <!-- {if $rec eq 'edit'} 商品编辑 -->
+              <select name="cat_id"    id="category2" style="width:40%; float:left">
+
+                  <!-- {foreach from=$child_category_list item=cate key=key} -->
+                  {$cate.cat_id}
+                  <!-- {if $product.cat_id eq $cate.cat_id } -->
+                  <option value="{$cate.cat_id}" selected="selected">{$cate.cat_name}</option>
+                  <!-- {else} -->
+                  <option value="{$cate.cat_id}">{$cate.cat_name}</option>
+                  <!-- {/if} -->
+                  <!-- {/foreach} -->
+
+              </select>
+              <!-- {/if} -->
+
+
+          </dd>
+      </dl>
+
+<div style="clear: both"></div>
+         <dl>
+             <dt>单价类型</dt>
+             <dd>
+                 <select name="price_type" class="price_type">
+
+                     <option value="" selected="selected">选择单价类型</option>
+
+                     <!-- {if $product.price_type eq 0} -->
+                     <option value="0" selected="selected">固定值</option>
+                     <!-- {else} -->
+                     <option value="0"  >固定值</option>
+                     <!-- {/if} -->
+
+                     <!-- {if $product.price_type eq 1} -->
+                     <option value="1" selected="selected">范围</option>
+                     <!-- {else} -->
+                     <option value="1"  >范围</option>
+                     <!-- {/if} -->
+                 </select>
+             </dd>
+         </dl>
+         <dl>
+             <dt>商户端id</dt>
+             <dd style="float: left">
+                 <input type="text" name="user_id" value="{$product.user_id}" size="40" class="inpMain" />
+             </dd>
+         </dl>
+         <div style="clear: both"></div>
+      <dl>
+       <dt>{$lang.product_price}</dt>
+       <dd style="float: left">
+        <input type="text" name="price" value="{if $product.price}{$product.price}{else}0{/if}" size="40" class="inpMain" />
+       </dd>
+          <!-- {if $product.price_type eq 1} -->
+          <dd class="price_to" style="float: left">
+              - <input type="text" name="price_to" value="{if $product.price_to}{$product.price_to}{else}0{/if}" size="40" class="inpMain" />
+          </dd>
+          <!-- {else} -->
+          <dd class="price_to" style="float: left;display: none">
+              - <input type="text" name="price_to" value="{if $product.price_to}{$product.price_to}{else}0{/if}" size="40" class="inpMain" />
+          </dd>
+          <!-- {/if} -->
+
+      </dl>
+
+      <dl style="clear: both">
+         <dt>任务人数</dt>
+         <dd>
+             <input type="text" name="max" value="{if $product.max}{$product.max}{else}0{/if}" size="40" class="inpMain" />
+         </dd>
+     </dl>
+         <dl>
+             <dt>计算单位</dt>
+             <dd>
+                 <input type="text" name="jisuandw" value="{$product.jisuandw}" size="40" class="inpMain" />
+             </dd>
+         </dl>
+         <dl>
+             <dt>需求地点</dt>
+             <dd>
+                 <input type="text" name="city" value="{$product.city}"   class="inpMain" />
+             </dd>
+         </dl>
+         <dl>
+             <dt>发票类型</dt>
+             <dd>
+                 <input type="text" name="tax_type" value="{$product.tax_type}"   class="inpMain" />
+             </dd>
+         </dl>
+      <dl style="display: none">
+       <dt>指定工人手机号(用英文,逗号隔开。该选项只针对商户总包任务设置)</dt>
+       <dd>
+        <input type="text" name="bind_mobile" value="{$product.bind_mobile}"  class="inpMain" />
+       </dd>
+      </dl>
+      <dl>
+       <dl style="display: none">
+        <dt>商户任务id</dt>
+        <dd>
+         <input type="text" name="pid" value="{$product.pid}"  class="inpMain" />
+        </dd>
+       </dl>
+
+
+          <dl>
+              <dt>公司主体</dt>
+              <dd>
+                  <select name="company">
+                      <option value="" selected="selected">请选择公司主体</option>
+
+                      <!-- {if $product.company eq '上海睿猫科技发展有限公司'} -->
+                      <option value="上海睿猫科技发展有限公司" selected="selected">上海睿猫科技发展有限公司</option>
+                      <!-- {else} -->
+                      <option value="上海睿猫科技发展有限公司"  >上海睿猫科技发展有限公司</option>
+                      <!-- {/if} -->
+
+                      <!-- {if $product.company eq '华煌信息科技（山东）有限公司'} -->
+                      <option value="华煌信息科技（山东）有限公司" selected="selected">华煌信息科技（山东）有限公司</option>
+                      <!-- {else} -->
+                      <option value="华煌信息科技（山东）有限公司"  >华煌信息科技（山东）有限公司</option>
+                      <!-- {/if} -->
+
+
+                      <!-- {if $product.company eq '财瑞云商务服务（山东）有限公司'} -->
+                      <option value="财瑞云商务服务（山东）有限公司" selected="selected">财瑞云商务服务（山东）有限公司</option>
+                      <!-- {else} -->
+                      <option value="财瑞云商务服务（山东）有限公司"  >财瑞云商务服务（山东）有限公司</option>
+                      <!-- {/if} -->
+
+
+                  </select>
+              </dd>
+          </dl>
+
+      <dl>
+       <dt>任务状态</dt>
+       <dd>
+        <select name="status">
+           <!-- {if $product.status eq 0} -->
+         <option value="0" selected="selected">进行中</option>
+         <!-- {else} -->
+         <option value="0"  >进行中</option>
+         <!-- {/if} -->
+
+         <!-- {if $product.status eq 1} -->
+         <option value="1" selected="selected">已完成</option>
+         <!-- {else} -->
+         <option value="1"  >已完成</option>
+         <!-- {/if} -->
+         </select>
+       </dd>
+      </dl>
+        <dl>
+         <dt>支付状态</dt>
+         <dd>
+          <select name="pay_status">
+           <!-- {if $product.pay_status eq 0} -->
+           <option value="0" selected="selected">未支付</option>
+           <!-- {else} -->
+           <option value="0"  >未支付</option>
+           <!-- {/if} -->
+
+           <!-- {if $product.pay_status eq 1} -->
+           <option value="1" selected="selected">已支付</option>
+           <!-- {else} -->
+           <option value="1"  >已支付</option>
+           <!-- {/if} -->
+          </select>
+         </dd>
+        </dl>
+      <dl style="display: none">
+       <dt>任务类型</dt>
+       <dd>
+           <!--
+        <select name="type">
+         <option value="0" selected="selected">分包任务</option>
+<option value="1"  >商户端任务</option>
+        </select>
+           -->
+
+           <select name="type">
+               <option value="1" selected="selected">商户端任务</option>
+           </select>
+       </dd>
+      </dl>
+
+        <dl>
+         <dt>报名开始时间</dt>
+         <dd>
+          <input name="start_time"  value="{$product.start_time}"   type="text" class="inpMain" id="time"  style="width:250px"  />
+         </dd>
+        </dl>
+        <dl>
+         <dt>报名截止时间</dt>
+         <dd>
+          <input name="stop_time"  value="{$product.stop_time}"  type="text" class="inpMain"  id="time1" style="width:250px"   />
+         </dd>
+        </dl>
+        <dl>
+         <dt>任务结束时间</dt>
+         <dd>
+          <input name="end_time"  value="{$product.end_time}" type="text" class="inpMain" id="time2" style="width:250px"   />
+         </dd>
+        </dl>
+      <!-- {if $product.defined} -->
+      <dl>
+       <dt>{$lang.product_defined}</dt>
+       <dd>
+        <textarea name="defined" id="defined" cols="50" class="textAreaAuto" style="height:{$product.defined_count}0px">{$product.defined}</textarea>
+        <script type="text/javascript">
+         {literal}
+         $("#defined").autoTextarea({maxHeight:300});
+
+
+
+
+         {/literal}
+        </script>
+        </dd>
+      </dl>
+      <!-- {/if} -->
+      <dl style="display: none">
+       <dt>{$lang.product_content}</dt>
+       <dd>
+        <!-- FileBox -->
+        <div id="contentFile" class="fileBox">
+         <ul class="fileBtn">
+          <li class="btnFile" onclick="fileBox('content');">{$lang.file_insert_image}</li>
+          <li class="fileStatus" style="display:none"><img src="images/loader.gif" alt="uploading"/></li>
+         </ul>
+        </div>
+        <!-- /FileBox -->
+        <!-- TinyMCE -->
+        <script type="text/javascript" charset="utf-8" src="include/tinymce/tinymce.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="include/tinymce/init.js"></script>
+        <textarea id="content" name="content" rows="20">{$product.content}</textarea>
+        <!-- /TinyMCE -->
+       </dd>
+      </dl>
+      <dl style="display:none">
+       <dt>{$lang.thumb}</dt>
+       <dd>
+        <input type="file" name="image" size="38" class="inpFlie" />
+        {if $product.image}<a href="{$product.image}" target="_blank"><img src="images/icon_yes.png"></a>{else}<img src="images/icon_no.png">{/if}</dd>
+      </dl>
+      <dl style="display: none">
+       <dt>描述</dt>
+       <dd>
+        <input type="text" name="keywords" value="{$product.keywords}" size="114" class="inpMain" />
+       </dd>
+      </dl>
+        <dl style="display: none">>
+         <dt>结算周期</dt>
+         <dd>
+          <input type="text" name="zhouqi" value="{$product.zhouqi}" size="114" class="inpMain" />
+         </dd>
+        </dl>
+        <dl>
+        <dt>验收标准</dt>
+        <dd>
+        <textarea name="content" cols="115" rows="3" class="textArea" />{$product.content}</textarea>
+        </dd>
+        </dl>
+      <!--<dl>-->
+       <!--<dt>{$lang.description}</dt>-->
+       <!--<dd>-->
+        <!--<textarea name="description" cols="115" rows="3" class="textArea" />{$product.description}</textarea>-->
+       <!--</dd>-->
+      <!--</dl>-->
+      <dl>
+       <input type="hidden" name="token" value="{$token}" />
+       <input type="hidden" name="id" value="{$product.id}">
+       <input name="submit" class="btn" type="submit" value="{$lang.btn_submit}" />
+      </dl>
+     </div>
+    </form>
+     <script type="text/javascript">
+         {literal}
+         var select=document.getElementById("category1");
+         select.onchange=function(){
+             var cat_id =  $(this).val();
+             $.ajax({
+                 type: 'post',
+                 url:'product.php?rec=getcatchildlist',
+                 data: {cat_id:cat_id},
+                 dateType: 'json',
+                 success: function(response){
+
+                     var obj3  = JSON.parse(response);
+
+                     var html = '';
+
+                     if(obj3)
+                     {
+                         $.each(obj3,function(i,n)
+                         {
+                             console.log(n);
+                             html += '<option value="'+n.cat_id+'">'+n.cat_name+'</option>';
+                         });
+                         $('#category2').html(html);
+                         $('#category2').css("display","block");
+                     }
+
+                 },
+                 error:function(){
+                     alert('请稍后再试');
+                 }
+             });
+         }
+
+
+
+
+         {/literal}
+     </script>
+    <!-- {/if} -->
+    <!-- {if $rec eq 'thumb'} -->
+    <h3><a href="{$action_link.href}" class="actionBtn">{$action_link.text}</a>{$ur_here}</h3>
+    <script type="text/javascript">
+    {literal}
+     function mask(i) {
+        document.getElementById('mask').innerHTML += i;
+        document.getElementById('mask').scrollTop = 100000000;
+     }
+     function success() {
+        var d=document.getElementById('success');
+        d.style.display="block";
+     }
+    {/literal}
+    </script>
+    <dl id="maskBox">
+     <dt><em>{$mask.count}</em><!-- {if !$mask.confirm} --><form action="product.php?rec=thumb" method="post"><input name="confirm" class="btn" type="submit" value="{$lang.product_thumb_start}" /></form><!-- {/if} --></dt>
+     <dd class="maskBg">{$mask.bg}<i id="success">{$lang.product_thumb_succes}</i></dd>
+     <dd id="mask"></dd>
+    </dl>
+    <!-- {/if} -->
+   </div>
+ </div>
+ {include file="footer.htm"}
+ </div>
+<!-- {if $rec eq 'default'} 商品列表 -->
+<script type="text/javascript">
+{literal}onload = function() {document.forms['action'].reset();}{/literal}
+</script>
+<!-- {else} -->
+{include file="filebox.htm"}
+<!-- {/if} -->
+<!-- {if $rec neq 're_thumb'} -->
+</body>
+</html>
+<!-- {/if} -->

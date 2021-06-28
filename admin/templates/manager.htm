@@ -1,0 +1,1259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>{$lang.home}{if $ur_here} - {$ur_here} {/if}</title>
+<meta name="Copyright" content="Douco Design." />
+<link href="templates/public.css" rel="stylesheet" type="text/css">
+
+{include file="javascript.htm"}
+</head>
+<body>
+<div id="dcWrap">
+ {include file="header.htm"}
+ <div id="dcLeft">{include file="menu.htm"}</div>
+ <div id="dcMain">
+   {include file="handle.htm"}
+   <div id="manager" class="mainBox" style="{$workspace.height}">
+    <h3><!-- {if $rec neq 'manager_log'} 管理员列表 -->
+     <a href="{$action_link.href}" class="actionBtn"  style="margin-left: 5px;">{$action_link.text}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+     <!-- {if $type eq 2} 工人用户 -->
+     <a href="manager.php?rec=uploadworker" class="actionBtn" style="margin-left: 5px;">批量添加工人</a>&nbsp;&nbsp;&nbsp;&nbsp;
+     <!-- {/if} -->
+       <!-- {if $rec eq 'default'} 管理员列表 -->
+
+     <a href="manager.php?rec=add&type=3" class="actionBtn" style="margin-left: 5px;">添加落地团队</a>&nbsp;&nbsp;&nbsp;&nbsp;
+       <a href="manager.php?rec=add&type=1" class="actionBtn" style="margin-left: 5px;">添加商户</a>&nbsp;&nbsp;&nbsp;&nbsp;
+       <a href="manager.php?rec=add&type=2" class="actionBtn"  style="margin-left: 5px;">添加工人</a>
+       <!-- {/if} -->
+     <!-- {/if} -->{$ur_here}</h3>
+    <!-- {if $rec eq 'default'} 管理员列表 -->
+    <form action="manager.php" method="post">
+     <select name="type">
+      <option value=""  >全部</option>
+      <!-- {if $type eq 0 }-->
+      <option value="0" selected="selected">网站管理员</option>
+      <!-- {else} -->
+      <option value="0">网站管理员</option>
+      <!-- {/if} -->
+
+      <!-- {if $type eq 3 }-->
+      <option value="3" selected="selected">落地团队</option>
+      <!-- {else} -->
+      <option value="3">落地团队</option>
+      <!-- {/if} -->
+
+       <!-- {if $type eq 1 }-->
+      <option value="1" selected="selected">商户端用户</option>
+      <!-- {else} -->
+      <option value="1">商户端用户</option>
+      <!-- {/if} -->
+
+      <!-- {if $type eq 2 }-->
+      <option value="2" selected="selected">工人用户</option>
+      <!-- {else} -->
+      <option value="2">工人用户</option>
+      <!-- {/if} -->
+      </select>
+     <select name="status">
+      <option value=""  >全部</option>
+      <!-- {if $status eq 0 }-->
+      <option value="0" selected="selected">待审核</option>
+      <!-- {else} -->
+      <option value="0">待审核</option>
+      <!-- {/if} -->
+
+      <!-- {if $status eq 1 }-->
+      <option value="1" selected="selected">审核通过</option>
+      <!-- {else} -->
+      <option value="1">审核通过</option>
+      <!-- {/if} -->
+
+      <!-- {if $status eq 2 }-->
+      <option value="2" selected="selected">审核失败</option>
+      <!-- {else} -->
+      <option value="2">审核失败</option>
+      <!-- {/if} -->
+     </select>
+     <input name="user_name" type="text" placeholder="用户名" class="inpMain" value="{$user_name}" size="20" />
+     <input name="truename" type="text" placeholder="真实姓名" class="inpMain" value="{$truename}" size="20" />
+     <input name="mobile" type="text" placeholder="手机号" class="inpMain" value="{$mobile}"  />
+     <select name="stage">
+      <option value=""  >所处状态</option>
+      <!-- {if $stage eq 1 }-->
+      <option value="1" selected="selected">未实名认证</option>
+      <!-- {else} -->
+      <option value="1">未实名认证</option>
+      <!-- {/if} -->
+
+      <!-- {if $stage eq 2 }-->
+      <option value="2" selected="selected">已认证未签约</option>
+      <!-- {else} -->
+      <option value="2">已认证未签约</option>
+      <!-- {/if} -->
+
+      <!-- {if $stage eq 3 }-->
+      <option value="3" selected="selected">已签约</option>
+      <!-- {else} -->
+      <option value="3">已签约</option>
+      <!-- {/if} -->
+     </select>
+      <input name="submit" class="btnGray" type="submit" value="{$lang.btn_filter}" />
+    </form>
+
+    <form name="action" method="post" action="manager.php?rec=action">
+     <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic" style="margin-top: 10px;">
+     <tr>
+      <th width="22" align="center"><input name='chkall' type='checkbox' id='chkall' onclick='selectcheckbox(this.form)' value='check'></th>
+      <th width="30" align="center">{$lang.record_id}</th>
+      <th align="left">{$lang.manager_username}</th>
+       <th align="center">钱包</th>
+       <th align="center">类型</th>
+      <th align="center">身份证</th>
+      <th align="center">手机号</th>
+      <th align="center">真实姓名</th>
+      <th align="center">{$lang.manager_add_time}</th>
+      <th align="center">{$lang.manager_last_login}</th>
+      <th align="center">状态</th>
+      <th align="center">所处阶段</th>
+      <th align="center">{$lang.handler}</th>
+     </tr>
+     <!-- {foreach from=$manager_list item=manager_list} -->
+     <tr>
+      <td align="center"><input type="checkbox" name="checkbox[]" value="{$manager_list.user_id}" /></td>
+      <td align="center">{$manager_list.user_id}</td>
+      <td>{$manager_list.user_name}</td>
+      <td>{$manager_list.amount}</td>
+       <td align="center"><!-- {if $manager_list.type eq 0} -->后台管理员<!-- {/if} --><!-- {if $manager_list.type eq 3} -->落地团队<!-- {/if} --><!-- {if $manager_list.type eq 1} -->商户端用户<!-- {/if} --><!-- {if $manager_list.type eq 2} -->工人用户<!-- {/if} --></td>
+      <td align="center">{$manager_list.card_id}</td>
+      <td align="center">{$manager_list.mobile}</td>
+      <td align="center">{$manager_list.truename}</td>
+      <td align="center">{$manager_list.add_time}</td>
+      <td align="center">{$manager_list.last_login}</td>
+      <td align="center">
+       <!-- {if $manager_list.status eq 0} -->待审核<!-- {/if} -->
+       <!-- {if $manager_list.status eq 1} -->审核通过<!-- {/if} -->
+       <!-- {if $manager_list.status eq 2} -->审核失败<!-- {/if} --></td>
+      <td align="center">{$manager_list.stage}</td>
+      <td align="center"><a href="manager.php?rec=edit&id={$manager_list.user_id}">{$lang.edit}</a> | <a href="manager.php?rec=del&id={$manager_list.user_id}">{$lang.del}</a></td>
+     </tr>
+     <!-- {/foreach} -->
+    </table>
+     <div class="action">
+      <select name="action" onchange="douAction()">
+       <option value="0">{$lang.select}</option>
+       <option value="del_all">{$lang.del}</option>
+       </select>
+      <input name="submit" class="btn" type="submit" value="{$lang.btn_execute}" />
+     </div>
+    </form>
+    <div class="clear"></div>
+    {include file="pager.htm"}
+    <!-- {/if} -->
+    <!-- {if $rec eq 'add'} 管理员添加 -->
+
+    <form action="manager.php?rec=insert" method="post">
+     <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+      <tr>
+       <td width="100" align="right">用户名</td>
+       <td>
+        <input type="text" name="user_name" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {if $type eq 3} 落地团队 -->
+      <tr style="display: none">
+       <td width="100" align="right" >商户简称</td>
+       <td>
+        <input type="text" name="jc" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">商户简称</td>
+       <td>
+        <input type="text" name="jc" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+      <!-- {if $type eq 2||$type eq 3} 工人用户、落地团队  -->
+      <tr style="display: none">
+       <td width="100" align="right">{$lang.manager_email}</td>
+       <td>
+        <input type="text" name="email" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">{$lang.manager_email}</td>
+       <td>
+        <input type="text" name="email" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+      <!-- {if $type eq 2||$type eq 3} 工人用户、落地团队 -->
+      <tr style="display: none">
+       <td width="100" align="right">钱包余额</td>
+       <td>
+        <input type="text" name="amount" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">钱包余额</td>
+       <td>
+        <input type="text" name="amount" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+      <!-- {if $type eq 3} 落地团队 -->
+      <tr  style="display: none">
+       <td width="100" align="right">身份证</td>
+       <td>
+        <input type="text" name="card_id" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">身份证</td>
+       <td>
+        <input type="text" name="card_id" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+      <!-- {if $type eq 3} 落地团队 -->
+      <tr   style="display: none">
+       <td width="100" align="right">真实姓名</td>
+       <td>
+        <input type="text" name="truename" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">真实姓名</td>
+       <td>
+        <input type="text" name="truename" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+
+      <!-- {if $type eq 3} 落地团队 -->
+      <tr  style="display: none">
+       <td width="100" align="right">手机号</td>
+       <td>
+        <input type="text" name="mobile" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">手机号</td>
+       <td>
+        <input type="text" name="mobile" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+      <tr>
+       <td width="100" align="right">类型</td>
+       <td>
+        <select name="type"  class="inpMain">
+         <!-- {if $type eq 0} 网站管理员 -->
+         <option value="0" selected >网站管理员</option>
+         <!-- {else} -->
+         <option value="0"  >网站管理员</option>
+         <!-- {/if} -->
+
+         <!-- {if $type eq 3} 落地团队 -->
+         <option value="3" selected >落地团队</option>
+         <!-- {else} -->
+         <option value="3"  >落地团队</option>
+         <!-- {/if} -->
+
+         <!-- {if $type eq 1} 商户端用户 -->
+         <option value="1" selected >商户端用户</option>
+         <!-- {else} -->
+         <option value="1"  >商户端用户</option>
+         <!-- {/if} -->
+
+         <!-- {if $type eq 2} 工人用户 -->
+         <option value="2"  selected>工人用户</option>
+         <!-- {else} -->
+         <option value="2" >工人用户</option>
+         <!-- {/if} -->
+
+        </select>
+       </td>
+      </tr>
+      <tr>
+       <td width="100" align="right">状态</td>
+       <td>
+        <select name="status"  class="inpMain">
+         <option value="0"  >待审核</option>
+         <option value="1"  >审核通过</option>
+         <option value="2"  >审核失败</option>
+        </select>
+       </td>
+      </tr>
+
+
+
+
+      <!-- {if $type eq 2||$type eq 3} 工人用户、落地团队 -->
+      <tr style="display: none">
+       <td width="100" align="right">是否可以自主创建任务</td>
+       <td>
+        <select name="createpro"  class="inpMain">
+         <option value="0"  >不允许</option>
+         <option value="1"  >允许</option>
+        </select>
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">是否可以自主创建任务</td>
+       <td>
+        <select name="createpro"  class="inpMain">
+         <option value="0"  >不允许</option>
+         <option value="1"  >允许</option>
+        </select>
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+      <!-- {if  $type eq 3}  落地团队 -->
+      <tr  style="display: none">
+       <td width="100" align="right">签约公司</td>
+       <td>
+        <select name="company"  class="inpMain">
+         <!-- {foreach from=$company_list item=cam} -->
+         <option value="{$cam.company}"  >{$cam.company}</option>
+         <!-- {/foreach} -->
+        </select>
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">签约公司</td>
+       <td>
+        <select name="company"  class="inpMain">
+         <!-- {foreach from=$company_list item=cam} -->
+         <option value="{$cam.company}"  >{$cam.company}</option>
+         <!-- {/foreach} -->
+        </select>
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+      <tr>
+       <td align="right">{$lang.manager_password}</td>
+       <td>
+        <input type="password" name="password" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <tr>
+       <td align="right">{$lang.manager_password_confirm}</td>
+       <td>
+        <input type="password" name="password_confirm" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {if $type eq 1} 商户 -->
+
+      <tr>
+       <td width="100" align="right">签约类型</td>
+       <td>
+
+        <span id="span1">
+          <ul id="content">
+
+          </ul>
+          <a class="actionBtn"  style="margin-left: 5px;">添加</a>
+        </span>
+
+        <span id="span2" style="display: none">
+
+         <select id="category1"    style="width:40%; float:left">
+         <!-- {foreach from=$category_list item=cate key=key} -->
+         {$cate.cat_id}
+          <!-- {if $parent_cat_info.parent_id eq $cate.cat_id } -->
+         <option value="{$cate.cat_id}" selected="selected">{$cate.cat_name}</option>
+          <!-- {else} -->
+         <option value="{$cate.cat_id}">{$cate.cat_name}</option>
+          <!-- {/if} -->
+          <!-- {/foreach} -->
+        </select>
+         <!-- {if $rec eq 'add'} 商品添加 -->
+        <select name="cat_id"    id="category2" style="display:none;width:40%; float:left">
+        </select>
+         <!-- {/if} -->
+
+         <!-- {if $rec eq 'edit'} 商品编辑 -->
+        <select name="cat_id"    id="category2" style="width:40%; float:left">
+
+         <!-- {foreach from=$child_category_list item=cate key=key} -->
+         {$cate.cat_id}
+         <!-- {if $product.cat_id eq $cate.cat_id } -->
+         <option value="{$cate.cat_id}" selected="selected">{$cate.cat_name}</option>
+         <!-- {else} -->
+         <option value="{$cate.cat_id}">{$cate.cat_name}</option>
+         <!-- {/if} -->
+         <!-- {/foreach} -->
+
+        </select>
+         <!-- {/if} -->
+
+          <a class="actionBtn"  style="margin-left: 5px;">保存</a>
+        </span>
+       <input type="hidden" id="cat_ids" name="cat_ids" />
+
+       </td>
+      </tr>
+
+
+      <script type="text/javascript">
+       {literal}
+       var select=document.getElementById("category1");
+       select.onchange=function(){
+        var cat_id =  $(this).val();
+        $.ajax({
+         type: 'post',
+         url:'product.php?rec=getcatchildlist',
+         data: {cat_id:cat_id},
+         dateType: 'json',
+         success: function(response){
+
+          var obj3  = JSON.parse(response);
+
+          var html = '';
+
+          if(obj3)
+          {
+           $.each(obj3,function(i,n)
+           {
+            console.log(n);
+            html += '<option value="'+n.cat_id+'">'+n.cat_name+'</option>';
+           });
+           $('#category2').html(html);
+           $('#category2').css("display","block");
+          }
+
+         },
+         error:function(){
+          alert('请稍后再试');
+         }
+        });
+       }
+
+       $("#span1 .actionBtn").click(function(){
+        $(this).css("display","none");
+        $("#span2").css("display","block");
+       });
+
+        $("#span2 .actionBtn").click(function(){
+        $("#span2").css("display","none");
+        $("#span1 .actionBtn").css("display","block");
+        $("#cat_ids").val($("#cat_ids").val()+","+$('#category2').val());
+        $("#span1 #content").append("<li class='"+$('#category2').val()+"'>"+$("#category2").find("option:selected").text()+" <a class='delBtns' data-value='"+$('#category2').val()+"' style='margin-left: 5px;'>删除</a></li>");
+
+
+        });
+
+
+
+       $("#content").on("click",".delBtns",function(){
+        var id = $(this).attr("data-value");
+         $(this).parent().remove();
+         var str_ids = $("#cat_ids").val()+",";
+         re = new RegExp(","+id+",","g");
+         var Newstr = str_ids.replace(re, ",");
+         $("#cat_ids").val(Newstr);
+        });
+
+
+
+
+
+
+
+       {/literal}
+      </script>
+
+
+
+
+      <tr>
+       <td width="100" align="right">企业名称</td>
+       <td>
+        <input type="text" name="enterprise_name"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">费率设置</td>
+       <td>
+        <input type="text" name="taxrat"  class="inpMain" />%
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">社会信用统一代码</td>
+       <td>
+        <input type="text" name="credit_code"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">营业执照有效期</td>
+       <td>
+        <input type="text" name="term_validity"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">企业办公地</td>
+       <td>
+        <input type="text" name="enterprise_addr"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">行业类型</td>
+       <td>
+        <input type="text" name="industry_type"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">经营范围</td>
+       <td>
+        <input type="text" name="scope_business"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">法人姓名</td>
+       <td>
+        <input type="text" name="legal_person"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">证件类型</td>
+       <td>
+        <input type="text" name="card_type"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">证件号</td>
+       <td>
+        <input type="text" name="card_no"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">有效期</td>
+       <td>
+        <input type="text" name="card_time"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">企业联系人姓名</td>
+       <td>
+        <input type="text" name="contacts_name"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">企业联系人邮箱</td>
+       <td>
+        <input type="text" name="contacts_email"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">联系方式</td>
+       <td>
+        <input type="text" name="contacts_tel"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">开户行</td>
+       <td>
+        <input type="text" name="open_bank"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">开户城市</td>
+       <td>
+        <input type="text" name="open_bank_city"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">支行名称</td>
+       <td>
+        <input type="text" name="branch_bank"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">开户公司名称</td>
+       <td>
+        <input type="text" name="open_company"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">银行账户</td>
+       <td>
+        <input type="text" name="bank_no"  class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if}  -->
+      <tr>
+       <td></td>
+       <td>
+        <input type="hidden" name="token" value="{$token}" />
+        <input type="submit" name="submit" class="btn" value="{$lang.btn_submit}" />
+       </td>
+      </tr>
+     </table>
+    </form>
+    <!-- {/if} -->
+    <!-- {if $rec eq 'edit'} 管理员编辑 -->
+    <form action="manager.php?rec=update" method="post">
+     <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+      <tr>
+       <td width="100" align="right">{$lang.manager_username}</td>
+       <td>
+        <input type="text" name="user_name" value="{$manager_info.user_name}" size="40" class="inpMain" {if $user.action_list neq 'ALL'}readonly="true"{/if}/>
+       </td>
+      </tr>
+
+
+      <!-- {if $type eq 3} 落地团队 -->
+      <tr style="display: none">
+        <td width="100" align="right">商户简称</td>
+       <td>
+        <input type="text" name="jc" value="{$manager_info.jc}" size="40" class="inpMain"  />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">商户简称</td>
+       <td>
+        <input type="text" name="jc" value="{$manager_info.jc}" size="40" class="inpMain"  />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+
+
+
+      <!-- {if $type eq 2||$type eq 3} 工人用户、落地团队 -->
+      <tr style="display: none">
+       <td width="100" align="right">钱包余额</td>
+       <td>
+        <input type="text" name="amount" size="40"   value="{$manager_info.amount}" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">钱包余额</td>
+       <td>
+        <input type="text" name="amount" size="40"   value="{$manager_info.amount}" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+      <!-- {if $type eq 2||$type eq 3} 工人用户、落地团队  -->
+      <tr style="display: none">
+        <td width="100" align="right">{$lang.manager_email}</td>
+       <td>
+        <input type="text" name="email" value="{$manager_info.email}" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">{$lang.manager_email}</td>
+       <td>
+        <input type="text" name="email" value="{$manager_info.email}" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+      <!-- {if $type eq 3} 落地团队 -->
+      <tr   style="display: none">
+       <td width="100" align="right">真实姓名</td>
+       <td>
+        <input type="text" name="truename" value="{$manager_info.truename}" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">真实姓名</td>
+       <td>
+        <input type="text" name="truename" value="{$manager_info.truename}" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+      <!-- {if $type eq 3} 落地团队 -->
+      <tr  style="display: none">
+       <td width="100" align="right">身份证</td>
+       <td>
+        <input type="text" name="card_id" value="{$manager_info.card_id}" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">身份证</td>
+       <td>
+        <input type="text" name="card_id" value="{$manager_info.card_id}" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+      <tr>
+       <td width="100" align="right">身份证正面</td>
+       <td>
+        <img src="{$manager_info.card_pics}" width="300px" />
+       </td>
+      </tr>
+      <tr>
+       <td width="100" align="right">身份证反面</td>
+       <td>
+        <img src="{$manager_info.card_pic_backs}" width="300px" />
+       </td>
+      </tr>
+      <!-- {if $type eq 3} 落地团队 -->
+      <tr  style="display: none">
+       <td width="100" align="right">手机号</td>
+       <td>
+        <input type="text" name="mobile" value="{$manager_info.mobile}" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">手机号</td>
+       <td>
+        <input type="text" name="mobile" value="{$manager_info.mobile}" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+      <tr>
+       <td width="100" align="right">类型</td>
+       <td>
+        <select name="type"  class="inpMain">
+         <!-- {if $manager_info.type eq 0} -->
+         <option value="0" selected="selected">网站管理员</option>
+         <!-- {else} -->
+         <option value="0"  >网站管理员</option>
+         <!-- {/if} -->
+         <!-- {if $manager_info.type eq 3} -->
+         <option value="3" selected="selected">落地团队</option>
+         <!-- {else} -->
+         <option value="3"  >落地团队</option>
+         <!-- {/if} -->
+         <!-- {if $manager_info.type eq 1} -->
+         <option value="1" selected="selected">商户端用户</option>
+         <!-- {else} -->
+         <option value="1"  >商户端用户</option>
+         <!-- {/if} -->
+         <!-- {if $manager_info.type eq 2} -->
+         <option value="2" selected="selected">工人用户</option>
+         <!-- {else} -->
+         <option value="2"  >工人用户</option>
+         <!-- {/if} -->
+        </select>
+       </td>
+      <tr>
+       <td width="100" align="right">状态</td>
+       <td>
+        <select name="status"  class="inpMain">
+
+         <!-- {if $manager_info.status eq 0} -->
+         <option value="0"  selected="selected">待审核</option>
+         <!-- {else} -->
+         <option value="0"  >待审核</option>
+         <!-- {/if} -->
+
+
+         <!-- {if $manager_info.status eq 1} -->
+         <option value="1"   selected="selected">审核通过</option>
+          <!-- {else} -->
+         <option value="1"  >审核通过</option>
+         <!-- {/if} -->
+
+         <!-- {if $manager_info.status eq 2} -->
+         <option value="2"   selected="selected">审核失败</option>
+          <!-- {else} -->
+         <option value="2"  >审核失败</option>
+         <!-- {/if} -->
+
+
+        </select>
+       </td>
+      </tr>
+
+      <!-- {if $type eq 2} 工人用户 -->
+      <tr>
+       <td width="100" align="right">所处阶段</td>
+       <td>
+        {$manager_info.stage}
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+      <!-- {if $type eq 2||$type eq 3} 工人用户、落地团队 -->
+      <tr style="display: none">
+       <td width="100" align="right">是否允许自主创建任务</td>
+       <td>
+        <select name="createpro"  class="inpMain">
+
+         <!-- {if $manager_info.createpro eq 0} -->
+         <option value="0"  selected="selected">不允许</option>
+         <!-- {else} -->
+         <option value="0"  >不允许</option>
+         <!-- {/if} -->
+
+
+         <!-- {if $manager_info.createpro eq 1} -->
+         <option value="1"   selected="selected">允许</option>
+         <!-- {else} -->
+         <option value="1"  >允许</option>
+         <!-- {/if} -->
+
+        </select>
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">是否允许自主创建任务</td>
+       <td>
+        <select name="createpro"  class="inpMain">
+
+         <!-- {if $manager_info.createpro eq 0} -->
+         <option value="0"  selected="selected">不允许</option>
+         <!-- {else} -->
+         <option value="0"  >不允许</option>
+         <!-- {/if} -->
+
+
+         <!-- {if $manager_info.createpro eq 1} -->
+         <option value="1"   selected="selected">允许</option>
+         <!-- {else} -->
+         <option value="1"  >允许</option>
+         <!-- {/if} -->
+
+        </select>
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+      <!-- {if  $type eq 3}  落地团队 -->
+      <tr  style="display: none">
+       <td width="100" align="right">签约公司</td>
+       <td>
+        <select name="company" class="inpMain">
+         <option value="" selected="selected">请选择公司主体</option>
+         <!-- {foreach from=$company_list item=cam} -->
+         <!-- {if $manager_info.company eq $cam.company} -->
+         <option value="{$cam.company}" selected="selected">{$cam.company}</option>
+         <!-- {else} -->
+         <option value="{$cam.company}"  >{$cam.company}</option>
+         <!-- {/if} -->
+         <!-- {/foreach} -->
+
+
+        </select>
+       </td>
+      </tr>
+      <!-- {else} -->
+      <tr>
+       <td width="100" align="right">签约公司</td>
+       <td>
+        <select name="company" class="inpMain">
+         <option value="" selected="selected">请选择公司主体</option>
+         <!-- {foreach from=$company_list item=cam} -->
+         <!-- {if $manager_info.company eq $cam.company} -->
+         <option value="{$cam.company}" selected="selected">{$cam.company}</option>
+         <!-- {else} -->
+         <option value="{$cam.company}"  >{$cam.company}</option>
+         <!-- {/if} -->
+         <!-- {/foreach} -->
+
+
+        </select>
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+       <!-- {if $if_check} -->
+      <tr>
+       <td align="right">{$lang.manager_old_password}</td>
+       <td>
+        <input type="password" name="old_password" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+      <tr>
+       <td align="right">{$lang.manager_new_password}</td>
+       <td>
+        <input type="password" name="password" size="40" class="inpMain" />
+       </td>
+      </tr>
+      <tr>
+       <td align="right">{$lang.manager_new_password_confirm}</td>
+       <td>
+        <input type="password" name="password_confirm" size="40" class="inpMain" />
+       </td>
+      </tr>
+
+
+      <!-- {if $type eq 1} 商户 -->
+
+      <tr>
+      <tr>
+       <td width="100" align="right">签约类型</td>
+       <td>
+
+        <span id="span1">
+          <ul id="content">
+            <!-- {foreach from=$select_cat item=cate key=key} -->
+           <li class='{$cate.id}'> {$cate.name}<a class='delBtns' data-value='{$cate.id}' style='margin-left: 5px;'>删除</a></li>
+           <!-- {/foreach} -->
+          </ul>
+          <a class="actionBtn"  style="margin-left: 5px;">添加</a>
+        </span>
+
+        <span id="span2" style="display: none">
+
+         <select id="category1"    style="width:40%; float:left">
+         <!-- {foreach from=$category_list item=cate key=key} -->
+         {$cate.cat_id}
+          <!-- {if $parent_cat_info.parent_id eq $cate.cat_id } -->
+         <option value="{$cate.cat_id}" selected="selected">{$cate.cat_name}</option>
+          <!-- {else} -->
+         <option value="{$cate.cat_id}">{$cate.cat_name}</option>
+          <!-- {/if} -->
+          <!-- {/foreach} -->
+        </select>
+         <!-- {if $rec eq 'add'} 商品添加 -->
+        <select name="cat_id"    id="category2" style="display:none;width:40%; float:left">
+        </select>
+         <!-- {/if} -->
+
+         <!-- {if $rec eq 'edit'} 商品编辑 -->
+        <select name="cat_id"    id="category2" style="width:40%; float:left">
+
+         <!-- {foreach from=$child_category_list item=cate key=key} -->
+         {$cate.cat_id}
+         <!-- {if $product.cat_id eq $cate.cat_id } -->
+         <option value="{$cate.cat_id}" selected="selected">{$cate.cat_name}</option>
+         <!-- {else} -->
+         <option value="{$cate.cat_id}">{$cate.cat_name}</option>
+         <!-- {/if} -->
+         <!-- {/foreach} -->
+
+        </select>
+         <!-- {/if} -->
+
+          <a class="actionBtn"  style="margin-left: 5px;">保存</a>
+        </span>
+        <input type="hidden" id="cat_ids" name="cat_ids" value="{$manager_info.cat_ids}" />
+
+       </td>
+      </tr>
+
+
+      <script type="text/javascript">
+       {literal}
+       var select=document.getElementById("category1");
+       select.onchange=function(){
+        var cat_id =  $(this).val();
+        $.ajax({
+         type: 'post',
+         url:'product.php?rec=getcatchildlist',
+         data: {cat_id:cat_id},
+         dateType: 'json',
+         success: function(response){
+
+          var obj3  = JSON.parse(response);
+
+          var html = '';
+
+          if(obj3)
+          {
+           $.each(obj3,function(i,n)
+           {
+            console.log(n);
+            html += '<option value="'+n.cat_id+'">'+n.cat_name+'</option>';
+           });
+           $('#category2').html(html);
+           $('#category2').css("display","block");
+          }
+
+         },
+         error:function(){
+          alert('请稍后再试');
+         }
+        });
+       }
+
+       $("#span1 .actionBtn").click(function(){
+        $(this).css("display","none");
+        $("#span2").css("display","block");
+       });
+
+       $("#span2 .actionBtn").click(function(){
+        $("#span2").css("display","none");
+        $("#span1 .actionBtn").css("display","block");
+        $("#cat_ids").val($("#cat_ids").val()+","+$('#category2').val());
+        $("#span1 #content").append("<li class='"+$('#category2').val()+"'>"+$("#category2").find("option:selected").text()+" <a class='delBtns' data-value='"+$('#category2').val()+"' style='margin-left: 5px;'>删除</a></li>");
+
+
+       });
+
+
+
+       $("#content").on("click",".delBtns",function(){
+        var id = $(this).attr("data-value");
+        $(this).parent().remove();
+        var str_ids = $("#cat_ids").val()+",";
+        re = new RegExp(","+id+",","g");
+        var Newstr = str_ids.replace(re, ",");
+        $("#cat_ids").val(Newstr);
+       });
+
+
+
+
+
+
+
+       {/literal}
+      </script>
+
+
+
+      <tr>
+       <td width="100" align="right">费率</td>
+       <td>
+        <input type="text" name="taxrat"  value="{$manager_info.taxrat}"  class="inpMain" />%
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">企业名称</td>
+       <td>
+        <input type="text" name="enterprise_name"  value="{$enterprise_info.enterprise_name}"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">社会信用统一代码</td>
+       <td>
+        <input type="text" name="credit_code" value="{$enterprise_info.credit_code}"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">营业执照有效期</td>
+       <td>
+        <input type="text" name="term_validity"  value="{$enterprise_info.term_validity}" class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">企业办公地</td>
+       <td>
+        <input type="text" name="enterprise_addr" value="{$enterprise_info.enterprise_addr}"   class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">行业类型</td>
+       <td>
+        <input type="text" name="industry_type"  value="{$enterprise_info.industry_type}" class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">经营范围</td>
+       <td>
+        <input type="text" name="scope_business"   value="{$enterprise_info.scope_business}"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">法人姓名</td>
+       <td>
+        <input type="text" name="legal_person"   value="{$enterprise_info.legal_person}" class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">证件类型</td>
+       <td>
+        <input type="text" name="card_type" value="{$enterprise_info.card_type}"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">证件号</td>
+       <td>
+        <input type="text" name="card_no" value="{$enterprise_info.card_no}"   class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">有效期</td>
+       <td>
+        <input type="text" name="card_time" value="{$enterprise_info.card_time}"   class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">企业联系人姓名</td>
+       <td>
+        <input type="text" name="contacts_name"  value="{$enterprise_info.contacts_name}" class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">企业联系人邮箱</td>
+       <td>
+        <input type="text" name="contacts_email" value="{$enterprise_info.contacts_email}"  class="inpMain" />
+       </td>
+      </tr>
+
+
+      <tr>
+       <td width="100" align="right">联系方式</td>
+       <td>
+        <input type="text" name="contacts_tel" value="{$enterprise_info.contacts_tel}"   class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">开户行</td>
+       <td>
+        <input type="text" name="open_bank"  value="{$enterprise_info.open_bank}"   class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">开户城市</td>
+       <td>
+        <input type="text" name="open_bank_city" value="{$enterprise_info.open_bank_city}"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">支行名称</td>
+       <td>
+        <input type="text" name="branch_bank" value="{$enterprise_info.branch_bank}"  class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">开户公司名称</td>
+       <td>
+        <input type="text" name="open_company"  value="{$enterprise_info.open_company}" class="inpMain" />
+       </td>
+      </tr>
+
+      <tr>
+       <td width="100" align="right">银行账户</td>
+       <td>
+        <input type="text" name="bank_no"   value="{$enterprise_info.bank_no}" class="inpMain" />
+       </td>
+      </tr>
+      <!-- {/if} -->
+
+
+      <tr>
+       <td></td>
+       <td>
+        <input type="hidden" name="token" value="{$token}" />
+        <input type="hidden" name="id" value="{$manager_info.user_id}" />
+        <input type="submit" name="submit" class="btn" value="{$lang.btn_submit}" />
+       </td>
+      </tr>
+     </table>
+    </form>
+    <!-- {/if} -->
+    <!-- {if $rec eq 'manager_log'} 操作日志 -->
+    <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+     <tr>
+      <th width="30" align="center">{$lang.record_id}</th>
+      <th width="150" align="left">{$lang.manager_log_create_time}</th>
+      <th width="100" align="center">{$lang.manager_log_user_name}</th>
+      <th align="left">{$lang.manager_log_action}</th>
+      <th width="100" align="center">{$lang.manager_log_ip}</th>
+     </tr>
+     <!-- {foreach from=$log_list item=log_list} -->
+     <tr>
+      <td align="center">{$log_list.id}</td>
+      <td>{$log_list.create_time}</td>
+      <td align="center">{$log_list.user_name}</td>
+      <td align="left">{$log_list.action}</td>
+      <td align="center">{$log_list.ip}</td>
+     </tr>
+     <!-- {/foreach} -->
+    </table>
+    {include file="pager.htm"}
+    <!-- {/if} -->
+    <!-- {if $rec eq 'uploadworker'} 上传工人模板 -->
+    <h3>上传工人模板</h3>
+    <form action="manager.php?rec=uploadworker_post"method="post" enctype="multipart/form-data">
+     <div class="formBasic">
+      <dl>
+       <dt>上传文件</dt>
+       <dd>
+        <input type="file" name="image" size="38" class="inpFlie" />
+        {if $article.image}<a href="{$article.image}" target="_blank"><img src="images/icon_yes.png"></a>{else}<img src="images/icon_no.png">{/if}
+       </dd>
+      </dl>
+      <input type="hidden" name="id" value="{$id}">
+      <input name="submit" class="btn" type="submit" value="{$lang.btn_submit}" />
+     </div>
+    </form>
+    <!-- {/if} -->
+   </div>
+ </div>
+ {include file="footer.htm"}
+ </div>
+</body>
+</html>

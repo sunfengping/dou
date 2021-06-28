@@ -1,0 +1,372 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,user-scalable=0,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="apple-touch-icon-precomposed" href="{$site.m_url}data/logo-icon.png" >
+<title>{$page_title}</title>
+<meta name="keywords" content="{$keywords}" />
+<meta name="description" content="{$description}" />
+<meta name="generator" content="DouPHP v1.3" />
+<link href="{$site.root_url}favicon.ico" rel="shortcut icon" type="image/x-icon" />
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="user.css" rel="stylesheet" type="text/css" />
+<script>var m_url = "{$site.m_url}";</script> 
+<script type="text/javascript" src="images/jquery.min.js"></script>
+<script type="text/javascript" src="images/global.js"></script>
+<script type="text/javascript" src="images/user.js"></script>
+</head>
+<body>
+<div id="wrapper"> {include file="inc/header.tpl"}
+ <div id="user"> 
+   <!-- {if $rec eq 'register'} 会员注册 -->
+   <div class="formBasic">
+    <form id="register" action="{$url.register_post}" method="post">
+     <dl>
+      <input name="email" type="text" class="textInput" value="{$post.email}" placeholder="{$lang.user_email}" />
+      <p id="email" class="cue"></p>
+     </dl>
+     <dl>
+      <input name="password" type="password" class="textInput" placeholder="{$lang.user_password}" />
+      <p id="password" class="cue"></p>
+     </dl>
+     <dl>
+      <input name="password_confirm" type="password" class="textInput" placeholder="{$lang.user_password_confirm}" />
+      <p id="password_confirm" class="cue"></p>
+     </dl>
+     <dl>
+      <input type="hidden" name="token" value="{$token}" />
+						<input type="hidden" name="sns_token" value="{$sns_token}" />
+      <input type="button" class="btn" value="{$lang.user_register_btn}" onclick="douSubmit('register')" />
+     </dl>
+    </form>
+   </div>
+   <!-- {/if} --> 
+   <!-- {if $rec eq 'login'} 会员登录 -->
+   <div class="formBasic">
+    <form action="{$url.login_post}" method="post">
+     <dl>
+      <input type="text" name="email" class="textInput" placeholder="{$lang.user_email}" />
+     </dl>
+     <dl>
+      <input type="password" name="password" class="textInput" placeholder="{$lang.user_password}" />
+     </dl>
+     <dl>
+      <input type="hidden" name="token" value="{$token}" />
+						<input type="hidden" name="sns_token" value="{$sns_token}" />
+      <input type="hidden" name="return_url" value="{$return_url}" />
+      <input type="submit" name="submit" class="btn" value="{$lang.user_login_btn}" />
+     </dl>
+     <dl>
+      <a href="{$url.password_reset}">{$lang.user_password_reset}？</a>
+     </dl>
+     <dl>
+      <a href="{$url.register}" class="btnGray">{$lang.user_register}</a>
+     </dl>
+    </form>
+   </div>
+		 <div class="snsIcon">
+				<!-- {foreach from=$connect_plugin_list item=plugin} -->
+				<a href="{$plugin.url}" title="{$plugin.name}" style="background: #19B4EA url({$plugin.icon}) no-repeat 50% 50%;"></a>
+				<!-- {/foreach} -->
+			</div>
+   <!-- {/if} --> 
+   <!-- {if $rec eq 'password_reset'} 重置密码 -->
+   <div class="formBasic">
+    <!-- {if $action eq 'default'} -->
+    <form action="{$url.password_reset_post}" method="post">
+     <dl>
+      <input type="text" name="email" class="textInput" placeholder="{$lang.user_email}" />
+     </dl>
+     <dl>
+      <input name="captcha" type="text" class="textInput captcha" placeholder="{$lang.m_captcha}">
+      <img id="vcode" height="37" src="{$site.root_url}captcha.php" alt="{$lang.captcha}" border="1" onClick="refreshimage()" title="{$lang.captcha_refresh}">
+     </dl>
+     <dl>
+      <input type="hidden" name="token" value="{$token}" />
+      <input type="submit" name="submit" class="btn" value="{$lang.user_password_reset_btn}" />
+     </dl>
+    </form>
+    <!-- {elseif $action eq 'reset'} -->
+    <form action="{$url.password_reset_post}" method="post">
+     <dl>
+      <input type="password" name="password" class="textInput" placeholder="{$lang.user_password}" />
+     </dl>
+     <dl>
+      <input type="password" name="password_confirm" class="textInput" placeholder="{$lang.user_password_confirm}" />
+     </dl>
+     <dl>
+      <input type="hidden" name="user_id" value="{$user_id}" />
+      <input type="hidden" name="code" value="{$code}" />
+      <input type="hidden" name="action" value="reset" />
+      <input type="hidden" name="token" value="{$token}" />
+      <input type="submit" name="submit" class="btn" value="{$lang.btn_submit}" />
+     </dl>
+    </form>
+    <!-- {/if} -->
+   </div>
+   <!-- {/if} -->
+		 <!-- {if $rec eq 'sns_link'} 账号绑定 -->
+			<div class="snsLink">
+				<div class="head">{$lang.user_sns}</div>
+				<div class="img"><img src="{$sns.avatar}" /></div>
+				<div>{$sns.nickname}</div>
+				<div class="action">
+					<a href="{$url_register}" class="btn">{$lang.user_sns_new_account}</a>
+					<a href="{$url_login}" class="btnGray">{$lang.user_sns_old_account}</a>
+				</div>
+			</div>
+			<!-- {/if} -->
+   <!-- {if $rec eq 'default'} 会员中心 -->
+   <div class="startPage">
+				<div class="basicInfo">
+					<div class="basic">
+						<h2>{$global_user.user_name}</h2>
+						<p>{$welcome}</p>
+						<a class="link" href="{$url.edit}">{$lang.user_modify_edit} &gt;</a>
+						<img class="avatar" src="{$user_info.avatar}" width="80" height="80" alt="{$user.user_name}">
+					</div>
+					<div class="info">
+						<dl><dt>{$lang.user_email}：</dt><dd>{$user_info.email}</dd></dl>
+						<dl><dt>{$lang.user_telphone}：</dt></dt><dd>{$user_info.telphone}</dd></dl>
+						<dl><dt>{$lang.user_sn}：<dd>{$user_info.user_sn}</dd></dl>
+						<dl><dt>{$lang.user_last_login}：</dt><dd>{$user_info.last_login}</dd></dl>
+						<dl><dt>{$lang.user_last_ip}：</dt><dd>{$user_info.last_ip}</dd></dl>
+						<dl><dt>{$lang.user_login_count}：</dt><dd>{$user_info.login_count}</dd></dl>
+					</div>
+				</div>
+			</div>
+   {include file="inc/user_tree.tpl"}
+   <!-- {/if} --> 
+   <!-- {if $rec eq 'edit'} 会员信息编辑 -->
+   <div class="formBasic">
+   <form id="userEdit" action="{$url.edit_post}" method="post">
+    <dl>
+     <dt>{$lang.user_contact}<i>*</i></dt>
+     <dd><input name="contact" type="text" class="textInput" value="{$user_info.contact}" />
+      <p id="contact" class="cue"></p></dd>
+    </dl>
+    <dl>
+     <dt>{$lang.user_telphone}<i>*</i></dt>
+     <dd><input name="telphone" type="text" class="textInput" value="{$user_info.telphone}" />
+      <p id="telphone" class="cue"></p></dd>
+    </dl>
+    <dl>
+     <dt>{$lang.user_address}</dt>
+     <dd><input name="address" type="text" class="textInput" value="{$user_info.address}" />
+      <p id="address" class="cue"></p></dd>
+    </dl>
+    <dl>
+     <dt>{$lang.user_postcode}</dt>
+     <dd><input name="postcode" type="text" class="textInput" value="{$user_info.postcode}" />
+      <p id="postcode" class="cue"></p></dd>
+    </dl>
+    <dl>
+     <dt>{$lang.user_sex}</dt>
+     <dd><label for="sex_1">
+       <input type="radio" name="sex" id="sex_1" value="1"{if $user_info.sex eq '1'} checked="true"{/if}>
+       {$lang.user_man}</label>
+      <label for="sex_0">
+       <input type="radio" name="sex" id="sex_0" value="0"{if $user_info.sex eq '0'} checked="true"{/if}>
+       {$lang.user_woman}</label>
+     </dd>
+    </dl>
+    <dl>
+     <dt>{$lang.user_avatar}<i>*</i></dt>
+     <dd>
+      <div class="inputFile">
+       <p id="avatarShow" class="imgShow">
+        <!-- {if $user_info.avatar} -->
+        <img src="{$user_info.avatar}" />
+        <!-- {/if} -->
+       </p>
+       <input type="file" name="avatar" id="avatarClick" style="display: none" />
+       <input type="hidden" name="avatarCheck" id="avatarValue" />
+       <input type="button" value="{$lang.user_avatar_upload}" class="imgBtn" />
+      </div>
+      <p id="avatarCheck" class="cue"></p>
+     </dd>
+    </dl>
+    <dl>
+     <dt>{$lang.user_nickname}<i>*</i></dd>
+     <dd><input name="nickname" type="text" class="textInput" value="{$user_info.nickname}" />
+      <p id="nickname" class="cue"></p></dd>
+    </dl>
+    <!-- {if $user_info.defined} -->
+    <dl>
+     <dt>{$lang.user_defined}</dt>
+     <dd><textarea name="defined" id="defined" cols="58" class="textAreaAuto" style="height:{$user_info.defined_count}0px">{$user_info.defined}</textarea>
+      <script type="text/javascript" src="images/jquery.autotextarea.js"></script>
+      <script type="text/javascript">
+      {literal}
+      $("#defined").autoTextarea({maxHeight:300});
+      {/literal}
+      </script></dd>
+    </dl>
+    <!-- {/if} -->
+    <dl>
+     <input type="hidden" name="token" value="{$token}" />
+     <input type="button" class="btn" value="{$lang.btn_submit}" onclick="douSubmit('userEdit')"/>
+    </dl>
+   </form>
+   </div>
+   <!-- {/if} --> 
+   <!-- {if $rec eq 'password'} 密码修改 -->
+   <div class="formBasic">
+   <form action="{$url.password_post}" method="post" class="password">
+    <dl>
+     <dt>{$lang.user_old_password}</dt>
+     <dd><input name="old_password" type="password" class="textInput" /></dd>
+    </dl>
+    <dl>
+     <dt>{$lang.user_password}</dt>
+     <dd><input name="password" type="password" class="textInput" /></dd>
+    </dl>
+    <dl>
+     <dt>{$lang.user_password_confirm}</dt>
+     <dd><input name="password_confirm" type="password" class="textInput" /></dd>
+    </dl>
+    <dl>
+     <input type="hidden" name="token" value="{$token}" />
+     <input type="submit" name="submit" class="btn" value="{$lang.btn_submit}" />
+    </dl>
+   </form>
+   </div>
+   <!-- {/if} -->
+	  <!-- {if $rec eq 'sns'} 账号绑定 -->
+			<div class="snsList">
+				<!-- {foreach from=$plugin_list item=plugin} -->
+				<dl>
+					<dt><i style="background: #19B4EA url({$plugin.icon}) no-repeat 50% 50%;"></i>{$plugin.name} <!-- {if $plugin.linked} --><em>{$lang.user_sns_linked}</em><!-- {/if} --></dt>
+					<dd>
+						<!-- {if $plugin.linked} -->
+						<a href="{$url.sns}&remove={$plugin.unique_id}">{$lang.user_sns_remove}</a>
+						<!-- {else} -->
+						<a href="{$url.sns}&link={$plugin.unique_id}">{$lang.user_sns_link}</a>
+						<!-- {/if} -->
+					</dd>
+				</dl>
+				<!-- {/foreach} -->
+			</div>
+			<!-- {/if} -->
+   <!-- {if $rec eq 'order_list'} 订单列表 -->
+   <div class="orderList">
+    <!-- {foreach from=$order_list item=order} -->
+    <div class="item">
+     <h3><span>{$order.status_format}</span>{$lang.order_sn}：<a href="{$url.order}&order_sn={$order.order_sn}">{$order.order_sn}</a></h3>
+     <div class="itemList">
+      <!-- {foreach from=$order.item_list item=item} -->
+      <dl>
+       <dt><a href="{$url.order}&order_sn={$order.order_sn}"><img title="{$item.name}" src="{$item.thumb}" width="60" height="60" /></a></dt>
+       <dd><p><a href="{$url.order}&order_sn={$order.order_sn}">{$item.name}</a></p><span>{$item.price}<br>x {$item.item_number}</span></dd>
+      </dl>
+      <!-- {/foreach} -->
+      <ul class="amount">
+       {$lang.order_order_amount}：{$order.order_amount_format} <em>({$lang.order_shipping_fee}：{$order.shipping_fee_format})</em>
+      </ul>
+      <ul class="btnList">
+       <a href="{$url.order}&order_sn={$order.order_sn}" class="btnMini">{$lang.order_view}</a>
+							<!-- {if $order.status eq '0'} -->
+							<!-- {if $order.cashier_url} -->
+							<a href="{$order.cashier_url}" class="btnMini btnRed">{$lang.order_payment_btn}</a>
+							<!-- {/if} -->
+							<a href="javascript:;" onclick="douConfirm('{$url.order_cancel}&order_sn={$order.order_sn}', '{$lang.order_cancel_confirm}')" class="btnMini">{$lang.order_cancel}</a>
+							<!-- {/if} -->
+      </ul>
+     </div>
+    </div>
+    <!-- {/foreach} -->
+    {include file="inc/pager.tpl"} </div>
+   <!-- {/if} --> 
+   <!-- {if $rec eq 'order'} 订单详情 -->
+   <div class="order">
+    <div class="tableBasic">
+     <dl>
+      <dt>{$lang.order_status}：</dt>
+      <dd>
+							<div class="btnBox">
+								<!-- {if $order.status eq '0'} -->
+								<!-- {if $order.cashier_url} -->
+								<a href="{$order.cashier_url}" class="btnMini btnRed">{$lang.order_payment_btn}</a>
+								<!-- {/if} -->
+								<a href="javascript:;" onclick="douConfirm('{$url.order_cancel}&order_sn={$order.order_sn}', '{$lang.order_cancel_confirm}')" class="btnMini">{$lang.order_cancel}</a>
+								<!-- {/if} -->
+							</div>
+							{$order.status_format}
+						</dd>
+     </dl>
+    </div>
+    <div class="tableBasic">
+     <dl>
+      <dt>{$lang.order_contact}：</dt>
+      <dd>{$order.contact}</dd>
+     </dl>
+     <dl>
+      <dt>{$lang.order_telphone}：</dt>
+      <dd>{$order.telphone}</dd>
+     </dl>
+     <dl>
+      <dt>{$lang.order_postcode}：</dt>
+      <dd>{$order.postcode}</dd>
+     </dl>
+     <dl>
+      <dt>{$lang.order_address}：</dt>
+      <dd>{$order.address}</dd>
+     </dl>
+    </div>
+    <div class="itemList">
+     <h3>{$lang.order_item_list}</h3>
+     <!-- {foreach from=$order.item_list item=item} -->
+     <dl>
+      <dt><a href="{$item.url}" target="_blank"><img title="{$item.name}" src="{$item.thumb}" width="60" height="60" /></a></dt>
+      <dd><p><a href="{$item.url}" target="_blank">{$item.name}</a></p><span>{$item.price}<br>x {$item.item_number}</span></dd>
+     </dl>
+     <!-- {/foreach} -->
+    </div>
+    <div class="totalAmount">
+     <dl>
+      <dt>{$lang.order_item_amount}：</dt>
+      <dd>{$order.item_amount_format}</dd>
+     </dl>
+     <!-- {if $order.shipping_id} -->
+     <dl>
+      <dt>{$lang.order_shipping_fee}：</dt>
+      <dd>{$order.shipping_fee_format}</dd>
+     </dl>
+     <!-- {/if} -->
+     <dl>
+      <dt>{$lang.order_order_amount}：</dt>
+      <dd>{$order.order_amount_format}</dd>
+     </dl>
+    </div>
+    <div class="tableBasic info">
+     <dl>
+      <dt>{$lang.order_sn}：</dt>
+      <dd>{$order.order_sn}</dd>
+     </dl>
+     <dl>
+      <dt>{$lang.order_add_time}：</dt>
+      <dd>{$order.add_time}</dd>
+     </dl>
+     <!-- {if $order.pay_name} -->
+     <dl>
+      <dt>{$lang.order_payment}：</dt>
+      <dd>{$order.pay_name}</dd>
+     </dl>
+     <!-- {/if} -->
+     <!-- {if $order.shipping_id} -->
+     <dl>
+      <dt>{$lang.order_shipping}：</dt>
+      <dd>{$order.shipping_name} ({$lang.order_tracking_no}：<!-- {if $order.tracking_no} -->{$order.tracking_no}<!-- {else} -->{$lang.order_undelivered}<!-- {/if} -->)</dd>
+     </dl>
+     <!-- {/if} -->
+    </div>
+   </div>
+   <!-- {/if} --> 
+  </div>
+ {include file="inc/footer.tpl"} </div>
+</body>
+</html>
